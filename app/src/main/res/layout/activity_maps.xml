@@ -16,20 +16,21 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="6"
-    tools:context="com.fractureof.demos.location.MapsActivity" />
-<ListView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/hangout_list"
+    android:layout_weight="7"
+    tools:context="com.fractureof.demos.location.MapsActivity"
+    android:tag='"hangoutsmap"' />
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/hangout_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="5"/>
+    android:layout_weight="7"
+    android:scrollbars="vertical"
+    />
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="1"
+    android:layout_weight="2"
     android:id="@+id/distance_view"
     android:name="com.fractureof.demos.location.DistanceFragment"
     tools:context="com.fractureof.demos.location.MapsActivity"

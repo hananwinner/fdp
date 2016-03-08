@@ -1,9 +1,9 @@
 package com.fractureof.demos.location;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -25,8 +25,19 @@ public class RoundedAvatarImageView extends ImageView {
         setWillNotDraw(false);
         mRoundedAvatarDrawable =
                  new RoundedAvatarDrawable(
-                         SplashActivity.avatarBitmap
+                         BitmapFactory.decodeResource(getResources(),R.drawable.partner_avatar_f)
                          );
+    }
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        super.setImageDrawable(drawable);
+        if (drawable instanceof RoundedAvatarDrawable) {
+            mRoundedAvatarDrawable = (RoundedAvatarDrawable) drawable;
+            int w = mRoundedAvatarDrawable.getBitmap().getWidth();
+            int h = mRoundedAvatarDrawable.getBitmap().getHeight();
+            onSizeChanged(w,h,0,0);
+        }
+
     }
 //    @Override
 //    public void setImageBitmap (Bitmap bm) {

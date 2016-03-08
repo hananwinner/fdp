@@ -62,10 +62,10 @@ public class RoundedAvatarDrawable extends Drawable {
         int w  = bounds.width();
         int minSquareSide = Math.min(h,w);
 
-        mRectF.set(bounds.centerX() - minSquareSide/2,
-                bounds.centerY() - minSquareSide/2,
-                bounds.centerX() + minSquareSide/2,
-                bounds.centerY() + minSquareSide/2);
+        mRectF.set(bounds.centerX() - minSquareSide / 2,
+                bounds.centerY() - minSquareSide / 2,
+                bounds.centerX() + minSquareSide / 2,
+                bounds.centerY() + minSquareSide / 2);
     }
 
     @Override
@@ -98,12 +98,6 @@ public class RoundedAvatarDrawable extends Drawable {
 
     public void setAntiAlias(boolean aa) {
         mPaint.setAntiAlias(aa);
-        invalidateSelf();
-    }
-
-    @Override
-    public void setFilterBitmap(boolean filter) {
-        mPaint.setFilterBitmap(filter);
         invalidateSelf();
     }
 

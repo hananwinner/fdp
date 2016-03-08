@@ -1,28 +1,14 @@
 package com.fractureof.demos.location;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.fractureof.demos.location.backend.UserProfile;
-import com.squareup.picasso.Picasso;
-import com.syncano.library.Syncano;
-import com.syncano.library.api.Response;
-import com.syncano.library.callbacks.SyncanoCallback;
-import com.syncano.library.data.SyncanoObject;
-
-import org.json.JSONException;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import android.widget.ImageView;
 
 
 /**
@@ -35,19 +21,12 @@ import java.net.URL;
  */
 public class DistanceFragment extends Fragment {
     private static final String TEMP_MY_USER_ID="11";
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MY_USER_ID = "1";
     private static final String ARG_PARTNER_USER_ID = "dummy";
 
-    // TODO: Rename and change types of parameters
     private String mMyUserId;
     private String mPartnerUserId;
-    //private Bitmap mMyAvatar;
-
-    private UserProfile userProfile;
-
-    //private OnFragmentInteractionListener mListener;
 
     public DistanceFragment() {
         // Required empty public constructor
@@ -80,40 +59,8 @@ public class DistanceFragment extends Fragment {
             mMyUserId = TEMP_MY_USER_ID;
             mPartnerUserId = getArguments().getString(ARG_PARTNER_USER_ID);
         }
+
     }
-//        Syncano  syncano = Syncano.init("83d5b6d706b3584108ac8c543a0b4809c9a4a8a5", "polished-night-6282");
-        //load the avatars
-//            SyncanoCallback<UserProfile> callback = new SyncanoCallback<UserProfile>() {
-//            @Override
-//            public void success(Response<UserProfile> response, UserProfile result) {
-//                userProfile = result;
-//                //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                //mMyAvatar = BitmapFactory.decodeFile( result.avatar, bmOptions);
-//                //mMyAvatar = BitmapFactory.decodeResource(getResources(),R.drawable.partner_avatar);
-//                //RoundedAvatarImageView v = (RoundedAvatarImageView)
-//                //URL url = null;
-//
-//
-//                Uri url1 = Uri.parse(userProfile.avatar.getLink());
-//                RoundedAvatarImageView myAvatarImageView =
-//                            (RoundedAvatarImageView) getView().findViewById(R.id.my_avatar);
-//                Picasso.with(getContext()).load(url1).into(myAvatarImageView);
-//
-////                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-////                Bitmap myAvatarBitmap = BitmapFactory.decodeFile( ,bmOptions);
-//
-////                myAvatarImageView.setImageBitmap( myAvatarBitmap );
-//
-//            }
-
-//            @Override
-//            public void failure(Response<UserProfile> response) {
-//                userProfile = null;
-//            }
-//            };
-//        syncano.getObject(UserProfile.class, Integer.decode(TEMP_MY_USER_ID).intValue()).sendAsync(callback);
-
-  //  }
 
 
 
@@ -123,19 +70,19 @@ public class DistanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_distance, container, false);
         if ( SplashActivity.avatarBitmap != null ) {
-            RoundedAvatarImageView myAvatarImageView = (RoundedAvatarImageView) result.findViewById(R.id.my_avatar);
+            ImageView myAvatarImageView = (ImageView) result.findViewById(R.id.my_avatar);
+            myAvatarImageView.setImageDrawable( new RoundedAvatarDrawable( SplashActivity.avatarBitmap) );
 
-//            int w = myAvatarImageView.getWidth();
-//            int h = myAvatarImageView.getHeight();
-//            int minSquareSide = Math.min(h, w);
-//
-//            Bitmap scaled = Bitmap.createScaledBitmap( SplashActivity.avatarBitmap,
-//                    minSquareSide,minSquareSide,
-//                    false);
-
-
-
-            myAvatarImageView.setImageBitmap( SplashActivity.avatarBitmap );
+            ImageView partnerAvatarImageView = (ImageView) result.findViewById(R.id.partner_avatar);
+            partnerAvatarImageView.setImageDrawable( new RoundedAvatarDrawable(
+                Bitmap.createScaledBitmap(
+                        BitmapFactory.decodeResource(
+                                getResources(), R.drawable.partner_avatar_f)
+                        ,
+                        160,
+                        160,
+                        false)
+            ) );
         }
         return result;
 
