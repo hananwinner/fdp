@@ -17,6 +17,9 @@ import com.syncano.library.choice.TraceStatus;
 import com.syncano.library.data.CodeBox;
 import com.syncano.library.data.Trace;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -39,7 +42,12 @@ public class SplashActivity extends AppCompatActivity {
     public static String temp_me_geo_id = "Ei9TZGVyb3QgRGF2aWQgSGFNZWxlY2ggMzUsIFRlbCBBdml2LVlhZm8sIElzcmFlbA";
     public static String temp_partner_geo_id = "ChIJL1AsW_JLHRURaRVnUxu6HSg";
     public static String list_str = "";
-    public static Collection<HangoutsResponse> hangoutsList;
+    //public static Collection<HangoutsResponse> hangoutsList;
+    public static JSONArray hangout_arr;
+    public static float temp_me_lat = 32.0800473f;
+    public static float temp_me_lng = 34.78528850000001f;
+
+
 
     class RetrieveInfoTask extends AsyncTask<Void, Void, Void> {
 
@@ -80,7 +88,11 @@ public class SplashActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                list_str = trace.getOutput();
+                try {
+                    hangout_arr = new JSONArray(trace.getOutput());
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                }
             }
             return null;
         }

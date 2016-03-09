@@ -4,9 +4,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.fractureof.demos.location.backend.codebox.PojoHangoutResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,15 +17,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final float HUE_DIFF = 30.0f;
     private GoogleMap mMap;
     private float mCurHue;
-    private String[] hangout_arr;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -33,24 +32,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        try {
-            JSONArray arr = new JSONArray(SplashActivity.list_str);
-            hangout_arr = new String[arr.length()];//  new String[arr.length()];
-            for (int i = 0; i < arr.length(); i++)
-            {
-                String hangout_name = arr.getJSONObject(i).getString("name");
-                hangout_arr[i] = hangout_name;
-            }
-            //ArrayAdapter adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, hangout_arr);
-            //ListView hangout_list = (ListView) findViewById(R.id.hangout_list);
-            //hangout_list.setAdapter(adapter);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONArray arr = new JSONArray(SplashActivity.list_str);
+//            hangout_arr = new PojoHangoutResponse[arr.length()];//  new String[arr.length()];
+//            for (int i = 0; i < arr.length(); i++)
+//            {
+//                String hangout_name = arr.getJSONObject(i).getString("name");
+//                hangout_arr[i].name = hangout_name;
+//                hangout_arr[i].address = hangout_name;
+//            }
+//            //ArrayAdapter adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, hangout_arr);
+//            //ListView hangout_list = (ListView) findViewById(R.id.hangout_list);
+//            //hangout_list.setAdapter(adapter);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.hangout_recycler_view);
 
@@ -63,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new HangoutsAdapter(hangout_arr);
+        mAdapter = new HangoutsAdapter(SplashActivity.hangout_arr);
         mRecyclerView.setAdapter(mAdapter);
     }
 
