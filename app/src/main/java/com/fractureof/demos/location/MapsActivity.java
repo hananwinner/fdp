@@ -123,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements
 
             mAdapter = new HangoutsAdapter(SplashActivity.hangout_arr, sel, this);
             mRecyclerView.swapAdapter(mAdapter, false);
-
+            mRecyclerView.smoothScrollToPosition(sel);
             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
             if (prevMarker != null) {
                 prevMarker.setIcon(BitmapDescriptorFactory.defaultMarker());
