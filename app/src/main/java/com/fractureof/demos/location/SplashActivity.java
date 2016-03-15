@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.fractureof.demos.location.backend.UserProfile;
 import com.fractureof.demos.location.backend.codebox.HangoutsResponse;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.syncano.library.Syncano;
@@ -40,13 +41,16 @@ public class SplashActivity extends AppCompatActivity {
     public static float temp_hangout_distance = 50.0f;
     public static String temp_hangout_vicinity = "partner";
     public static String temp_me_geo_id = "Ei9TZGVyb3QgRGF2aWQgSGFNZWxlY2ggMzUsIFRlbCBBdml2LVlhZm8sIElzcmFlbA";
+    public static LatLng temp_me_latLng = new LatLng(32.0800473f,34.78528850000001f);
+    public static LatLng temp_part_latLng = new LatLng(32.09353299999999f, 34.783258f);
     public static String temp_partner_geo_id = "ChIJL1AsW_JLHRURaRVnUxu6HSg";
     public static String list_str = "";
     //public static Collection<HangoutsResponse> hangoutsList;
     public static JSONArray hangout_arr;
     public static float temp_me_lat = 32.0800473f;
     public static float temp_me_lng = 34.78528850000001f;
-
+    public static Bitmap partnerMarkerBitmap;
+    public static Bitmap meMarkerBitmap;
 
 
     class RetrieveInfoTask extends AsyncTask<Void, Void, Void> {
@@ -63,10 +67,23 @@ public class SplashActivity extends AppCompatActivity {
         protected Void doInBackground(Void...params) {
 
             Response<UserProfile> result = syncano.getObject(UserProfile.class, Integer.decode("11").intValue()).send();
-            Uri url1 = Uri.parse(result.getData().avatar.getLink());
+            if (result.isSuccess()) {
+                Uri url1 = Uri.parse(result.getData().avatar.getLink());
+                try {
+                    avatarBitmap = Picasso.with(getApplicationContext()).load(url1).get();
+                } catch (IOException ex) { }
+            } else {
+                try {
+                    avatarBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_avatar_default).get();
+                } catch (IOException ex) { }
+            }
             try {
-                avatarBitmap = Picasso.with(getApplicationContext()).load(url1).get();
+                SplashActivity.partnerMarkerBitmap = Picasso.with(getApplicationContext()).load(R.drawable.partner_marker).get();
             } catch (IOException ex) {}
+            try {
+                SplashActivity.meMarkerBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_marker).get();
+            } catch (IOException ex) {}
+
 
             //load locations list
             JsonObject obj = new JsonObject();

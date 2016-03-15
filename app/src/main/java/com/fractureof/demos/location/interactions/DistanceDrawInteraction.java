@@ -1,6 +1,8 @@
 package com.fractureof.demos.location.interactions;
 
 import com.fractureof.demos.location.backend.PickupMethod;
+import com.fractureof.demos.location.logic.DistanceCalculator;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,85 +10,55 @@ import java.util.List;
 /**
  * Created by hanan on 29/02/2016.
  */
-public class DistanceDrawInteraction implements HangoutChangeListener {
-    private PickupMethod pickupMethod;
-    private String meGeoId;
-    private String partnerGeoId;
-    private String hangoutGeoId;
+public class DistanceDrawInteraction implements HangoutLocationChangeListener {
+    private DistanceDrawInteraction(LatLng meLatLng, LatLng hangoutLatLng, LatLng partnerLatLng) {
+        this.meLatLng = meLatLng;
+        this.hangoutLatLng = hangoutLatLng;
+        this.partnerLatLng = partnerLatLng;
+    }
+
+    private LatLng meLatLng;
+    private LatLng partnerLatLng;
+    private LatLng hangoutLatLng;
     private double distanceBetweenUs = -1;
     private double distanceHangoutMe = -1;
     private double distanceHangoutPartner = -1;
-    private String meAvatarURL;
-    private String partnerAvatarURL;
-
-    private DistanceDrawInteraction(PickupMethod pickupMethod,
-                                    String meGeoId,
-                                    String partnerGeoId,
-                                    String hangoutGeoId,
-                                    String meAvatarURL,
-                                    String partnerAvatarURL) {
-        this.pickupMethod = pickupMethod;
-        this.meGeoId = meGeoId;
-        this.partnerGeoId = partnerGeoId;
-        this.hangoutGeoId = hangoutGeoId;
-        this.meAvatarURL = meAvatarURL;
-        this.partnerAvatarURL = partnerAvatarURL;
-    }
-    public static DistanceDrawInteraction createDistanceDrawInteraction
-            (PickupMethod pickupMethod,
-             String meGeoId,
-             String partnerGeoId,
-             String hangoutGeoId,
-             String meAvatarURL,
-             String partnerAvatarURL) {
-        return new DistanceDrawInteraction(
-                pickupMethod,
-                meGeoId,
-                partnerGeoId,
-                hangoutGeoId,
-                meAvatarURL,
-                partnerAvatarURL);
-    }
-//    public void changeHangout( String hangoutGeoId) {
-//        this.hangoutGeoId = hangoutGeoId;
-//        for (HangoutChangeListener l : hangoutChangeListeners) {
-//            l.hangoutChange(hangoutGeoId);
-//        }
-//    }
-//
-//    private List<HangoutChangeListener> hangoutChangeListeners = new ArrayList<HangoutChangeListener>();
-//
-//    public void addListener(HangoutChangeListener toAdd) {
-//        hangoutChangeListeners.add(toAdd);
-//    }
 
     private void calcDistanceBetweenUs() {
-
+        this.distanceBetweenUs = DistanceCalculator.distance(meLatLng.latitude,meLatLng.longitude,partnerLatLng.latitude,
+                partnerLatLng.longitude, "K");
     }
 
     private void calcDistanceHangoutMe() {
-
+        this.distanceHangoutMe = DistanceCalculator.distance(
+                meLatLng.latitude,meLatLng.longitude,
+                hangoutLatLng.latitude,
+                hangoutLatLng.longitude, "K");
     }
 
     private void calcDistanceHangoutPartner() {
-
+        this.distanceHangoutPartner = DistanceCalculator.distance(
+                partnerLatLng.latitude,
+                partnerLatLng.longitude,
+                hangoutLatLng.latitude,
+                hangoutLatLng.longitude, "K");
     }
 
-    private double getDistanceBetweenUs() {
+    public double getDistanceBetweenUs() {
         if (distanceBetweenUs < 0) {
             calcDistanceBetweenUs();
         }
         return distanceBetweenUs;
     }
 
-    private double getDistanceHangoutMe() {
+    public double getDistanceHangoutMe() {
         if (distanceHangoutMe< 0) {
             calcDistanceBetweenUs();
         }
         return distanceHangoutMe;
     }
 
-    private double getDistanceHangoutPartner() {
+    public double getDistanceHangoutPartner() {
         if (distanceHangoutPartner < 0) {
             calcDistanceBetweenUs();
         }
@@ -94,9 +66,11 @@ public class DistanceDrawInteraction implements HangoutChangeListener {
     }
 
     @Override
-    public void hangoutChange(String hangoutGeoId) {
-        this.hangoutGeoId = hangoutGeoId;
+    public void hangoutChange(LatLng latLng) {
+        this.hangoutLatLng = latLng;
         calcDistanceHangoutMe();
         calcDistanceHangoutPartner();
     }
+
+
 }
