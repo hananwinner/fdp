@@ -1,11 +1,16 @@
 package com.fractureof.demos.location.logic;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.*;
 import java.lang.*;
 import java.io.*;
 
 public class DistanceCalculator
 {
+    public static double distance(LatLng latLng1, LatLng latLng2, String unit ) {
+        return distance(latLng1.latitude, latLng1.longitude,latLng2.latitude,latLng2.longitude, unit);
+    }
     public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));

@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.fractureof.demos.location.backend.Pickup;
+import com.fractureof.demos.location.backend.PickupInfoFactory;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +44,8 @@ public class DistanceFragment extends Fragment {
      * @return A new instance of fragment DistanceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DistanceFragment newInstance(String myUserId, String partnerUserId) {
+    public static DistanceFragment newInstance(String myUserId, String partnerUserId,
+                                               Pickup pickup) {
         DistanceFragment fragment = new DistanceFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MY_USER_ID, myUserId);
@@ -71,6 +75,7 @@ public class DistanceFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_distance, container, false);
         if ( SplashActivity.avatarBitmap != null ) {
             ImageView myAvatarImageView = (ImageView) result.findViewById(R.id.my_avatar);
+
             myAvatarImageView.setImageDrawable( new RoundedAvatarDrawable( SplashActivity.avatarBitmap) );
 
             ImageView partnerAvatarImageView = (ImageView) result.findViewById(R.id.partner_avatar);
@@ -84,6 +89,8 @@ public class DistanceFragment extends Fragment {
                         false)
             ) );
         }
+        DistanceDraw distanceDraw = (DistanceDraw) result.findViewById(R.id.distance_draw);
+        distanceDraw.setPickupData(PickupInfoFactory.getPickupInfo());
         return result;
 
     }

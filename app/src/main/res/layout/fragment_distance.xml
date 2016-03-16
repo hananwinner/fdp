@@ -5,28 +5,30 @@
     android:layout_height="match_parent"
     tools:context="com.fractureof.demos.location.DistanceFragment">
     <com.fractureof.demos.location.RoundedAvatarImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
         android:layout_margin="4dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:id="@+id/partner_avatar"
         android:src="@drawable/partner_avatar_f"
-        android:adjustViewBounds="false"
-        android:scaleType="center" />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="8"
-        android:id="@+id/distance_draw"
-        ></FrameLayout>
-    <com.fractureof.demos.location.RoundedAvatarImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:scaleType="center"
         android:layout_gravity="left"
+        />
+    <com.fractureof.demos.location.DistanceDraw
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:id="@+id/distance_draw"
+        android:layout_gravity="center"
+
+        />
+    <com.fractureof.demos.location.RoundedAvatarImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:id="@+id/my_avatar"
-        android:adjustViewBounds="false"
-        android:scaleType="center" />
+        android:scaleType="center"
+        android:layout_gravity="right"
+        />
 </LinearLayout>

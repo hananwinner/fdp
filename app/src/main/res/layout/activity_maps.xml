@@ -31,7 +31,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="2"
+    android:layout_weight="3"
     android:id="@+id/distance_view"
     android:name="com.fractureof.demos.location.DistanceFragment"
     tools:context="com.fractureof.demos.location.MapsActivity"

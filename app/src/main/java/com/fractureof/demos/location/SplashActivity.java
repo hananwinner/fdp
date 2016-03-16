@@ -51,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
     public static float temp_me_lng = 34.78528850000001f;
     public static Bitmap partnerMarkerBitmap;
     public static Bitmap meMarkerBitmap;
+    public static Bitmap partnerAvatarBitmap;
 
 
     class RetrieveInfoTask extends AsyncTask<Void, Void, Void> {
@@ -82,6 +83,9 @@ public class SplashActivity extends AppCompatActivity {
             } catch (IOException ex) {}
             try {
                 SplashActivity.meMarkerBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_marker).get();
+            } catch (IOException ex) {}
+            try {
+                SplashActivity.partnerAvatarBitmap= Picasso.with(getApplicationContext()).load(R.drawable.partner_avatar_f).get();
             } catch (IOException ex) {}
 
 

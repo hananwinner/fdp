@@ -12,4 +12,9 @@ public class HangoutType extends SyncanoObject {
     private static final String FIELD_NAME = "name";
     @SyncanoField(name = FIELD_NAME , filterIndex = false, orderIndex = false)
     public String name;
+    public HangoutType(String name) {
+        super();
+        this.name = name;
+
+    }
 }
