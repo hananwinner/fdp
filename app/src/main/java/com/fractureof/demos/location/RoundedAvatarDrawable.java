@@ -52,7 +52,10 @@ public class RoundedAvatarDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawOval(mRectF, mPaint);
+        Rect canvasBounds = canvas.getClipBounds();
+//        float heightDiff = Math.max(0, canvasBounds.height() - mRectF.height());
+//        canvas.drawOval(new RectF(mRectF.left, mRectF.top+heightDiff/2,mRectF.right,mRectF.bottom + heightDiff/2), mPaint);
+        canvas.drawOval(mRectF,mPaint);
     }
 
     @Override
@@ -110,6 +113,8 @@ public class RoundedAvatarDrawable extends Drawable {
     public Bitmap getBitmap() {
         return mBitmap;
     }
+
+
 
     // TODO allow set and use target density, mutate, constant state, changing configurations, etc.
 }
