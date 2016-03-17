@@ -39,11 +39,6 @@ public class RoundedAvatarImageView extends ImageView {
         }
 
     }
-//    @Override
-//    public void setImageBitmap (Bitmap bm) {
-//        //mRoundedAvatarDrawable = new RoundedAvatarDrawable(bm);
-//
-//    }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -51,7 +46,7 @@ public class RoundedAvatarImageView extends ImageView {
     }
     @Override
     protected void onDraw(Canvas canvas) {
-        //super.onDraw(canvas);
         mRoundedAvatarDrawable.draw(canvas);
     }
+
 }
