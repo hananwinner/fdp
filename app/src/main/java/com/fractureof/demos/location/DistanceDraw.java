@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -34,6 +35,11 @@ public class DistanceDraw extends View {
 
     static class Values {
         private static String drinkEmoticon =  "\ud83c\udf78";
+        private static float arrowHeadSideSize = 5.0f;
+        public static float arrowPadding = 2.0f;
+        public static String distanceUnit = "K";
+        public static String distanceTitleFMT = "%3.2f %s";
+        public static float drawTextonPathV = 14;
     }
     Paint mPaintDistanceBetweenUs;
     Paint mPaintDistanceHangoutMe;
@@ -75,8 +81,14 @@ public class DistanceDraw extends View {
         mPaintDistanceBetweenUs.setColor(Color.BLACK);
         mPaintDistanceHangoutMe = new Paint();
         mPaintDistanceHangoutMe.setColor(Color.BLACK);
+        mPaintDistanceHangoutMe.setTextSize(14.0f);
+        mPaintDistanceHangoutMe.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaintDistanceHangoutMe.setStrokeWidth(1.0f);
         mPaintDistanceHangoutPartner =  new Paint();
         mPaintDistanceHangoutPartner.setColor(Color.BLACK);
+        mPaintDistanceHangoutPartner.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaintDistanceHangoutPartner.setTextSize(14.0f);
+        mPaintDistanceHangoutPartner.setStrokeWidth(1.0f);
     }
 
     @Override
@@ -93,13 +105,70 @@ public class DistanceDraw extends View {
         //X of the hangout emoji
         float width = getWidth();
         float hangoutEmojiLeft = (width - scaledDimensions.textSize)/2;
+
+        String hangoutEmoticonStr = String.format("%s", Values.drinkEmoticon);
+        float emojiStrWidth = this.mPaintHangoutMark.measureText(hangoutEmoticonStr);
+
         if (pickup.dateLocationSet()) {
             //measure distance from me
-            float distanceMe = (float) DistanceCalculator.distance( pickup.meLatLng, pickup.dateLatLng, "K" );
-            float distancePartner = (float) DistanceCalculator.distance( pickup.partnerLatLng, pickup.dateLatLng, "K" );
+            float distanceMe = (float) DistanceCalculator.distance(
+                    pickup.meLatLng,
+                    pickup.dateLatLng,
+                    Values.distanceUnit);
+            float distancePartner = (float) DistanceCalculator.distance(
+                    pickup.partnerLatLng,
+                    pickup.dateLatLng,
+                    Values.distanceUnit );
+            String distHangPartnerTitle = String.format(Values.distanceTitleFMT,distancePartner,Values.distanceUnit);
+            String distHangMeTitle = String.format(Values.distanceTitleFMT,distanceMe,Values.distanceUnit);
+
             hangoutEmojiLeft = width/( distanceMe+distancePartner ) * distancePartner;
+
+            //arrow from partner to hangout
+            float arPartStartX=0 + Values.arrowPadding;
+            float arPartStartY = height/2 + scaledDimensions.textSize/2;
+            
+            float arPartEndX = hangoutEmojiLeft - Values.arrowPadding;
+            float arPartEndY = hangoutEmojiBottom;
+
+            float arPartHeadX = arPartEndX - Values.arrowHeadSideSize;
+            float arPartHeadY1 = arPartEndY + Values.arrowHeadSideSize;
+            float arPartHeadY2 = arPartEndY - Values.arrowHeadSideSize;
+
+            Path arPartPath = new Path();
+            arPartPath.moveTo(arPartStartX, arPartStartY);
+            arPartPath.lineTo(arPartEndX, arPartEndY);
+            arPartPath.moveTo(arPartEndX, arPartEndY);
+            arPartPath.lineTo(arPartHeadX, arPartHeadY1);
+            arPartPath.moveTo(arPartEndX, arPartEndY);
+            arPartPath.lineTo(arPartHeadX, arPartHeadY2);
+
+            canvas.drawPath(arPartPath,this.mPaintDistanceHangoutPartner);
+            canvas.drawTextOnPath(distHangPartnerTitle,arPartPath,0,Values.drawTextonPathV,this.mPaintDistanceHangoutPartner);
+
+
+            float arMeStartX = getWidth() - Values.arrowPadding;
+            float arMeStartY = arPartStartY;
+
+            float arMeEndX = hangoutEmojiLeft + emojiStrWidth + Values.arrowPadding;
+            float arMeEndY = hangoutEmojiBottom;
+
+            float arMeHeadX = arMeEndX + Values.arrowHeadSideSize;
+            float arMeHeadY1 = arMeEndY + Values.arrowHeadSideSize;
+            float arMeHeadY2 = arMeEndY - Values.arrowHeadSideSize;
+            Path arMePath = new Path();
+            arMePath.moveTo(arMeEndX, arMeEndY);
+            arMePath.lineTo(arMeStartX, arMeStartY);
+            arMePath.moveTo(arMeEndX, arMeEndY);
+            arMePath.lineTo(arMeHeadX, arMeHeadY1);
+            arMePath.moveTo(arMeEndX, arMeEndY);
+            arMePath.lineTo(arMeHeadX, arMeHeadY2);
+
+            canvas.drawPath(arMePath, this.mPaintDistanceHangoutMe);
+            canvas.drawTextOnPath(distHangMeTitle, arMePath, 0, Values.drawTextonPathV, this.mPaintDistanceHangoutMe);
         }
-        canvas.drawText( String.format("%s", Values.drinkEmoticon), hangoutEmojiLeft, hangoutEmojiBottom, this.mPaintHangoutMark);
+
+        canvas.drawText( hangoutEmoticonStr, hangoutEmojiLeft, hangoutEmojiBottom, this.mPaintHangoutMark);
     }
 
     @Override

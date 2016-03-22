@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,9 +26,7 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener, HangoutsAdapter.ViewHolder.IMyViewHolderClicks {
 
-    private static final float HUE_DIFF = 30.0f;
     private GoogleMap mMap;
-    private float mCurHue;
 
     private Map<Marker, Integer> hangoutMarkers = new HashMap<Marker, Integer>();
 
@@ -37,7 +36,9 @@ public class MapsActivity extends FragmentActivity implements
 
     int selected_hangout_index = -1;
     Marker prevMarker = null;
-    
+
+    DistanceDraw distanceDraw;
+
     private void initMarkers() {
         initOurMarkers();
         initHangoutMarkers();
@@ -79,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    @Override
+    @Override /*OnMarkerClickListener*/
     public boolean onMarkerClick(Marker marker) {
         if (hangoutMarkers.containsKey(marker)) {
             markSelectedIfChanged(marker);
@@ -90,7 +91,6 @@ public class MapsActivity extends FragmentActivity implements
     private void markSelectedIfChanged(Marker marker) {
         if (marker != prevMarker) {
             int sel = hangoutMarkers.get(marker);
-
             mAdapter = new HangoutsAdapter(SplashActivity.hangout_arr, sel, this);
             mRecyclerView.swapAdapter(mAdapter, false);
             mRecyclerView.smoothScrollToPosition(sel);
@@ -98,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements
             if (prevMarker != null) {
                 prevMarker.setIcon(BitmapDescriptorFactory.defaultMarker());
             }
+            distanceDraw.setDateLatLng(marker.getPosition());
             prevMarker = marker;
         }
     }
@@ -123,6 +124,9 @@ public class MapsActivity extends FragmentActivity implements
         // specify an adapter (see also next example)
         mAdapter = new HangoutsAdapter(SplashActivity.hangout_arr,-1, this);
         mRecyclerView.setAdapter(mAdapter);
+
+        ViewGroup distanceFragment = (ViewGroup) findViewById(R.id.distance_view);
+        distanceDraw= (DistanceDraw) distanceFragment.findViewById(R.id.distance_draw);
     }
 
     /**
