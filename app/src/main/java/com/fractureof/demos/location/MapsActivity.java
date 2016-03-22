@@ -37,20 +37,7 @@ public class MapsActivity extends FragmentActivity implements
 
     int selected_hangout_index = -1;
     Marker prevMarker = null;
-
-
-//    private void changeMarkers( List<LatLng> markers ) {
-//        mMap.clear();
-//        init();
-//
-//        for ( LatLng latLng : markers) {
-//            if ( hangoutMarkers.containsKey(latLng) ) {
-//                Marker marker =  hangoutMarkers.get(latLng);
-//
-//            }
-//        }
-//    }
-
+    
     private void initMarkers() {
         initOurMarkers();
         initHangoutMarkers();
@@ -92,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (hangoutMarkers.containsKey(marker)) {
@@ -115,33 +101,6 @@ public class MapsActivity extends FragmentActivity implements
             prevMarker = marker;
         }
     }
-
-//    class PutMarkerTask extends AsyncTask<Void, Void, Void> {
-//        GoogleMap map;
-//        MarkerOptions markerOptions;
-//        int i;
-
-//        public PutMarkerTask(GoogleMap map, MarkerOptions markerOptions, int i) {
-//            this.map = map;
-//            this.markerOptions= markerOptions;
-//            this.i = i;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            try {
-//                Thread.sleep(i * 500);
-//
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            map.addMarker(markerOptions);
-//        }
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,17 +151,5 @@ public class MapsActivity extends FragmentActivity implements
             }
         }
     }
-
-//    private void createMarker(LatLng latLng, String name, String address) {
-//        mCurHue += HUE_DIFF;
-//
-//        Marker marker = mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(latLng)
-//                        .icon(
-//                                BitmapDescriptorFactory.defaultMarker(
-//                                        mCurHue
-//                                )));
-//    }
 }
 
