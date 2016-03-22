@@ -24,16 +24,6 @@ import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener, HangoutsAdapter.ViewHolder.IMyViewHolderClicks {
-    @Override
-    public void onHangoutSelected(int idx) {
-        //go to the key of the marker..
-        for ( Marker marker : hangoutMarkers.keySet()) {
-            Integer marker_idx = hangoutMarkers.get(marker);
-            if (marker_idx == idx) {
-                markSelectedIfChanged(marker);
-            }
-        }
-    }
 
     private static final float HUE_DIFF = 30.0f;
     private GoogleMap mMap;
@@ -46,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements
     private RecyclerView.LayoutManager mLayoutManager;
 
     int selected_hangout_index = -1;
+    Marker prevMarker = null;
 
 
 //    private void changeMarkers( List<LatLng> markers ) {
@@ -62,11 +53,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private void initMarkers() {
         initOurMarkers();
-
         initHangoutMarkers();
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(SplashActivity.temp_part_latLng));
-
-
     }
 
     private void initOurMarkers() {
@@ -74,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements
         MarkerOptions opts = new MarkerOptions().position(SplashActivity.temp_part_latLng)
                 .icon(bitmapDesc);
         mMap.addMarker(opts);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(SplashActivity.temp_part_latLng));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SplashActivity.temp_part_latLng,
                 12.0f));
         BitmapDescriptor bitmapDescMe = BitmapDescriptorFactory.fromBitmap(SplashActivity.meMarkerBitmap);
@@ -84,7 +70,6 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void initHangoutMarkers() {
-        //for each
         for (int i = 0; i < SplashActivity.hangout_arr.length(); ++i) {
             try {
                 JSONObject obj = SplashActivity.hangout_arr.getJSONObject(i);
@@ -103,12 +88,11 @@ public class MapsActivity extends FragmentActivity implements
                 Marker marker = mMap.addMarker(opts);
                 hangoutMarkers.put(marker,i);
                 //new PutMarkerTask(mMap,opts,i).execute(null, null, null);
-
             } catch (JSONException ex) {}
         }
     }
 
-    Marker prevMarker = null;
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (hangoutMarkers.containsKey(marker)) {
@@ -195,32 +179,30 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-
-
         initMarkers();
-        //Add marker for partner at center of the map
-//        MarkerOptions opts = new MarkerOptions().position(SplashActivity.temp_part_latLng).title("Partner's Marker");
-//        mMap.addMarker(new MarkerOptions().position(SplashActivity.temp_part_latLng).title("Partner's Marker"));
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-
-        //// TODO: 29/02/2016  load location of me and partner
-        //show on map
-
     }
 
-    private void createMarker(LatLng latLng, String name, String address) {
-        mCurHue += HUE_DIFF; 
-        
-        Marker marker = mMap.addMarker(
-                new MarkerOptions()
-                        .position(latLng)
-                        .icon(
-                                BitmapDescriptorFactory.defaultMarker(
-                                        mCurHue
-                                )));
+    @Override /*IHangoutViewHolderClicks*/
+    public void onHangoutSelected(int idx) {
+        //go to the key of the marker..
+        for ( Marker marker : hangoutMarkers.keySet()) {
+            Integer marker_idx = hangoutMarkers.get(marker);
+            if (marker_idx == idx) {
+                markSelectedIfChanged(marker);
+            }
+        }
     }
+
+//    private void createMarker(LatLng latLng, String name, String address) {
+//        mCurHue += HUE_DIFF;
+//
+//        Marker marker = mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(latLng)
+//                        .icon(
+//                                BitmapDescriptorFactory.defaultMarker(
+//                                        mCurHue
+//                                )));
+//    }
 }
 

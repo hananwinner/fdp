@@ -25,19 +25,8 @@ public class HangoutsAdapter extends RecyclerView.Adapter<HangoutsAdapter.ViewHo
     private JSONArray mDataset;
     private int sel = 0;
 
-
     private ViewHolder.IMyViewHolderClicks listener;
 
-//    public void addListener(ViewHolder.IMyViewHolderClicks toAdd) {
-//        hangoutChangeListeners.add(toAdd);
-//    }
-
-//    private void onHangeoutChanged(int idx) {
-//        for (ViewHolder.IMyViewHolderClicks l : hangoutChangeListeners) {
-//            l.onHangoutSelected(idx);
-
-//        }
-//    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -66,8 +55,6 @@ public class HangoutsAdapter extends RecyclerView.Adapter<HangoutsAdapter.ViewHo
         }
     }
 
-
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public HangoutsAdapter(JSONArray myDataset, int sel, ViewHolder.IMyViewHolderClicks listener) {
         mDataset = myDataset;
@@ -84,7 +71,6 @@ public class HangoutsAdapter extends RecyclerView.Adapter<HangoutsAdapter.ViewHo
                 .inflate(android.R.layout.simple_list_item_2, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder((ViewGroup) v, listener);
-
         return vh;
     }
 
@@ -107,10 +93,6 @@ public class HangoutsAdapter extends RecyclerView.Adapter<HangoutsAdapter.ViewHo
             holder.mTextView2.setTextColor(Color.BLACK);
         }
     }
-
-
-
-
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
