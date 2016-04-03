@@ -30,9 +30,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 
 import static junit.framework.Assert.assertTrue;
+
+import com.facebook.FacebookSdk;
 
 /*
 retrieve the user_profile
@@ -40,6 +44,8 @@ retrieve pubs within 50 km from partner
  */
 
 public class SplashActivity extends AppCompatActivity {
+
+
 
     public static Syncano syncano =
 //            Syncano.init("83d5b6d706b3584108ac8c543a0b4809c9a4a8a5", "polished-night-6282");
@@ -192,7 +198,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
 
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
 //        String keyhash = com.facebook.FacebookSdk.getApplicationSignature(getApplicationContext());
         //fb_acc_token =  AccessToken.getCurrentAccessToken();
 
