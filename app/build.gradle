@@ -11,8 +11,17 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file("c:/Users/hanan/Google Drive/FOF/firstdate/ks1.jks" )
+            storePassword "thunder7torm"
+            keyAlias "ks1"
+            keyPassword "7and7creen"
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
