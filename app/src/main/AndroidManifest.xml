@@ -41,11 +41,36 @@
         </activity>
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".PartnerEntryActivity"
             android:label="@string/title_activity_partner_entry"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlansListActivity"
+            android:label="@string/title_plans_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlansDetailActivity"
+            android:label="@string/title_plans_detail"
+            android:parentActivityName=".PlansListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fractureof.demos.location.PlansListActivity" />
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1587770274876000"
+            android:exported="true" />
+
+        <activity android:name=".FacebookLoginActivity"></activity>
     </application>
 
 </manifest>
