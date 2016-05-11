@@ -16,7 +16,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:id="@+id/imageView"
+        android:id="@+id/nav_header_icon"
         android:scaleType="center"
         android:layout_gravity="center"
         android:src="@drawable/my_avatar"

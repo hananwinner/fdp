@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,6 +31,8 @@ public class PartnerEntryActivity extends AppCompatActivity
     private GoogleMap mMap;
     private Marker mPartnerMarker = null;
     private Random mRandom = new Random();
+    private static float randLocDegOffMax = 1.0f/150;
+    private static float mapZoomLevel = 15.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +45,19 @@ public class PartnerEntryActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-//        ImageView drawerHeaderIcon = (ImageView) navigationView.findViewById(R.id.imageView);
-//        drawerHeaderIcon.setImageBitmap(SplashActivity.avatarBitmap);
+//        View vvv=  findViewById(R.id.nav_header_icon);
+        ImageView drawerHeaderIcon = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_icon);
+        drawerHeaderIcon.setImageDrawable(new RoundedAvatarDrawable(SplashActivity.avatarBitmap));
     }
 
     @Override
@@ -71,8 +75,8 @@ public class PartnerEntryActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.partner_entry, menu);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        ImageView drawerHeaderIcon = (ImageView) navigationView.findViewById(R.id.imageView);
-        drawerHeaderIcon.setImageBitmap(SplashActivity.avatarBitmap);
+//        ImageView drawerHeaderIcon = (ImageView) navigationView.findViewById(R.id.imageView);
+//        drawerHeaderIcon.setImageBitmap(SplashActivity.avatarBitmap);
 
         return true;
     }
@@ -119,14 +123,19 @@ public class PartnerEntryActivity extends AppCompatActivity
     private void initOurMarkers() {
         BitmapDescriptor bitmapDesc = BitmapDescriptorFactory.fromBitmap(SplashActivity.fPartnerQm);
 
-        LatLng randomUnknownPartnerLoc = new LatLng(SplashActivity.temp_me_latLng.latitude + mRandom.nextFloat()/300,
-                SplashActivity.temp_me_latLng.longitude + mRandom.nextFloat()/300);
+        LatLng randomUnknownPartnerLoc =
+                new LatLng(
+                        SplashActivity.temp_me_latLng.latitude
+                                + mRandom.nextFloat() * randLocDegOffMax,
+                        SplashActivity.temp_me_latLng.longitude
+                                + mRandom.nextFloat()* randLocDegOffMax
+                );
 
         MarkerOptions opts = new MarkerOptions().position(randomUnknownPartnerLoc)
                 .icon(bitmapDesc);
         mPartnerMarker =  mMap.addMarker(opts);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SplashActivity.temp_part_latLng,
-                12.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(randomUnknownPartnerLoc,
+                mapZoomLevel));
         BitmapDescriptor bitmapDescMe = BitmapDescriptorFactory.fromBitmap(SplashActivity.meMarkerBitmap);
         MarkerOptions optsMe = new MarkerOptions().position(SplashActivity.temp_me_latLng)
                 .icon(bitmapDescMe);

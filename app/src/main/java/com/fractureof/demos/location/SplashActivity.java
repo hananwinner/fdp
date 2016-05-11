@@ -14,6 +14,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.AccessToken;
+import com.facebook.Profile;
 import com.fractureof.demos.location.backend.UserProfile;
 import com.fractureof.demos.location.backend.codebox.HangoutsResponse;
 import com.fractureof.demos.location.dummy.DatePlansContent;
@@ -68,6 +69,9 @@ public class SplashActivity extends AppCompatActivity {
     public static Bitmap meMarkerBitmap;
     public static Bitmap partnerAvatarBitmap;
     public static Bitmap fPartnerQm;
+    public static UserProfile fdp_user_profile;
+    public static Profile facebookProfile;
+//    public static Syncano syncano_user_create = Syncano.init("47cf12b867de776e9a0a099c65324c1ae1fb1bbb", "polished-night-6282");
     //public static AccessToken fb_acc_token;
 
     class RetrieveInfoTask extends AsyncTask<Void, Void, Void> {
@@ -84,17 +88,17 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void...params) {
 
-            Response<UserProfile> result = syncano.getObject(UserProfile.class, Integer.decode("11").intValue()).send();
-            if (result.isSuccess()) {
-                Uri url1 = Uri.parse(result.getData().avatar.getLink());
-                try {
-                    avatarBitmap = Picasso.with(getApplicationContext()).load(url1).get();
-                } catch (IOException ex) { }
-            } else {
-                try {
-                    avatarBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_avatar_default).get();
-                } catch (IOException ex) { }
-            }
+//            Response<UserProfile> result = syncano.getObject(UserProfile.class, Integer.decode("11").intValue()).send();
+//            if (result.isSuccess()) {
+//                fdp_user_profile = result.getData();
+//                try {
+//                    avatarBitmap = Picasso.with(getApplicationContext()).load(url1).get();
+//                } catch (IOException ex) { }
+//            } else {
+//                try {
+//                    avatarBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_avatar_default).get();
+//                } catch (IOException ex) { }
+//            }
             try {
                 SplashActivity.partnerMarkerBitmap = Picasso.with(getApplicationContext()).load(R.drawable.partner_marker).get();
             } catch (IOException ex) {}
@@ -152,6 +156,7 @@ public class SplashActivity extends AppCompatActivity {
             CodeBox cbx = new CodeBox(7);
             Response<Trace> response2 = cbx.run(obj);
             if (response2.isSuccess()) {
+                Log.d("loading date plans","Success");
                 Trace trace = cbx.getTrace();
                 long start = System.currentTimeMillis();
                 // wait until codebox finishes execution
@@ -160,6 +165,7 @@ public class SplashActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
+                        Log.d("loading date plans",String.format("Interrupted. %s",e.getStackTrace().toString()));
                         e.printStackTrace();
                     }
                 }
@@ -168,6 +174,8 @@ public class SplashActivity extends AppCompatActivity {
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
+            } else {
+                Log.d("loading date plans",String.format("Error: %s", response2.getError()));
             }
         }
 
