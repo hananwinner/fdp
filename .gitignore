@@ -7,3 +7,6 @@
 /build
 /captures
 *.apk
+.idea/gradle.xml
+.idea/*
+
