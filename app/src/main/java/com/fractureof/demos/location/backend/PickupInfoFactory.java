@@ -17,7 +17,8 @@ public class PickupInfoFactory {
         boolean partnerPickup = false;
         TransportationMeans meTrans = TransportationMeans.WALK;
         TransportationMeans partnerTrans = TransportationMeans.WALK;
-        HangoutType hangoutType = new HangoutType( "drink");
+        HangoutType hangoutType = new HangoutType();
+        hangoutType.name =  "drink";
         return new Pickup(
                 meetupLatLng,
                 dateLatLng,
