@@ -9,7 +9,7 @@ import java.util.Date;
 public class UserProfile extends SyncanoObject  {
 
 	private static final String FIELD_DEFAULT_GEO_LOCATION = "default_geo_location";
-	private static final String FIELD_FACEBOOK_ID = "facebook_id";
+	public static final String FIELD_FACEBOOK_ID = "facebook_id";
 	private static final String FIELD_FIRST_NAME = "first_name";
 	private static final String FIELD_LAST_NAME = "last_name";
 	private static final String FIELD_MIDDLE_NAME = "middle_name";
