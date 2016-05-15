@@ -101,7 +101,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 List<UserProfile> data = result.getData();
                 if (data.size() == 1) {
                     SplashActivity.fdp_user_profile = data.get(0);
-                    SplashActivity.fdp_user_profile.profile_picture_uri = SplashActivity.facebookProfile.getProfilePictureUri(160, 160);
+                    SplashActivity.fdp_user_profile.profilePictureUri = SplashActivity.facebookProfile.getProfilePictureUri(160, 160).toString();
 
                 } else if (data.size() == 0) {
                     //create new profile for this FB id
@@ -127,12 +127,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
                             int sz = newProfileData.size();
                             if (sz == 1) {
                                 SplashActivity.fdp_user_profile =newProfileData.get(0);
-                                SplashActivity.fdp_user_profile.facebook_id = facebookId;
+                                SplashActivity.fdp_user_profile.facebookId = facebookId;
                                 SplashActivity.fdp_user_profile.name = SplashActivity.facebookProfile.getName();
                                 SplashActivity.fdp_user_profile.firstName= SplashActivity.facebookProfile.getFirstName();
-                                SplashActivity.fdp_user_profile.middle_name = SplashActivity.facebookProfile.getMiddleName();
-                                SplashActivity.fdp_user_profile.last_name = SplashActivity.facebookProfile.getLastName();
-                                SplashActivity.fdp_user_profile.profile_picture_uri = SplashActivity.facebookProfile.getProfilePictureUri(160, 160);
+                                SplashActivity.fdp_user_profile.middleName = SplashActivity.facebookProfile.getMiddleName();
+                                SplashActivity.fdp_user_profile.lastName = SplashActivity.facebookProfile.getLastName();
+                                SplashActivity.fdp_user_profile.profilePictureUri = SplashActivity.facebookProfile.getProfilePictureUri(160, 160).toString();
 
                                 //get gender
                                 String gender = getGenderFromFacebook();
@@ -238,7 +238,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
 //            }
             try {
                 SplashActivity.avatarBitmap = Picasso.with(getApplicationContext()).load(
-                        SplashActivity.fdp_user_profile.profile_picture_uri
+                        SplashActivity.fdp_user_profile.profilePictureUri
                 ).get();
             } catch (IOException ex) {
             }
