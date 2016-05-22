@@ -1,5 +1,6 @@
 package com.fractureof.demos.location;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -16,8 +17,12 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.fractureof.demos.location.backend.UserProfile;
+import com.fractureof.demos.location.backend.UserProfileDecorator;
 import com.fractureof.demos.location.backend.codebox.HangoutsResponse;
 import com.fractureof.demos.location.dummy.DatePlansContent;
+import com.fractureof.demos.location.logic.profile.SocialProfile;
+import com.fractureof.demos.location.logic.profile.SocialProfileLoader;
+import com.fractureof.demos.location.logic.profile.SocialProfileRealMock;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
@@ -74,15 +79,54 @@ public class SplashActivity extends AppCompatActivity {
 //    public static Syncano syncano_user_create = Syncano.init("47cf12b867de776e9a0a099c65324c1ae1fb1bbb", "polished-night-6282");
     //public static AccessToken fb_acc_token;
 
+    public static void loadUserProfileFromFacebook
+            (SocialProfile facebookProfile
+                    , Context context) {
+        SocialProfileLoader loader = new SocialProfileLoader(
+                context,
+                SplashActivity.syncano,
+                facebookProfile);
+        UserProfileDecorator userProfileDecorator =  loader.load();
+        SplashActivity.fdp_user_profile = userProfileDecorator.mUserProfile;
+        SplashActivity.avatarBitmap = userProfileDecorator.mAvatarBitmap;
+    }
+
+    class RetrieveMockSocial extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void...params) {
+            loadUserProfileFromFacebook(
+                    MockFactory.createMockSocialProfile(
+                            getApplicationContext().getResources().getString( R.string.mock_facebook_profile_id_)
+                    ),
+                    getApplicationContext()
+            );
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent intent = new Intent(getApplicationContext(), PartnerNameEntryActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     class RetrieveInfoTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(getApplicationContext(), FacebookLoginActivity.class);
-//            intent.putExtra(PlansDetailFragment.ARG_ITEM_ID,"1");
-            startActivity(intent);
-            finish();
+            int mock_facebook_profile_id =  Integer.parseInt(
+                    getResources().getString( R.string.mock_facebook_profile_id_ )
+            );
+            if ( mock_facebook_profile_id < 0) {
+                Intent intent = new Intent(getApplicationContext(), FacebookLoginActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                new RetrieveMockSocial().execute(null,null,null);
+            }
         }
 
         @Override
