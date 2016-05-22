@@ -1,0 +1,6 @@
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+            android:hint="@string/hint_search"
+            android:label="@string/browse_members"
+            android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
+
+    />
