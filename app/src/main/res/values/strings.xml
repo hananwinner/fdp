@@ -10,5 +10,8 @@
     <string name="title_plans_detail">Date Plan Details</string>
 
     <string name="facebook_app_id">1587770274876000</string>
-
+    <string name="hint_search">Search members…</string>
+    <string name="mock_facebook_profile_id_">13</string>
+    <string name="browse_members">Search Members</string>
+    
 </resources>
