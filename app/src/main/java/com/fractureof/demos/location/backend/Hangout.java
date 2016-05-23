@@ -8,12 +8,12 @@ import java.util.Date;
 @SyncanoClass(name = "hangout")
 public class Hangout extends SyncanoObject  {
 
-	private static final String FIELD_TYPE = "type";
-	private static final String FIELD_PRIVACY_LEVEL = "privacy_level";
-	private static final String FIELD_LOUDNESS = "loudness";
-	private static final String FIELD_GEO_ID = "geo_id";
-	private static final String FIELD_LAT = "lat";
-	private static final String FIELD_LON = "lon";
+	public static final String FIELD_TYPE = "type";
+	public static final String FIELD_PRIVACY_LEVEL = "privacy_level";
+	public static final String FIELD_LOUDNESS = "loudness";
+	public static final String FIELD_GEO_ID = "geo_id";
+	public static final String FIELD_LAT = "lat";
+	public static final String FIELD_LON = "lon";
 
 	@SyncanoField(name = FIELD_TYPE, filterIndex = true, orderIndex = false)
 	public HangoutType type;

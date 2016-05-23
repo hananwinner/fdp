@@ -8,7 +8,7 @@ import java.util.Date;
 @SyncanoClass(name = "pickup_method")
 public class PickupMethod extends SyncanoObject  {
 
-	private static final String FIELD_NAME = "name";
+	public static final String FIELD_NAME = "name";
 
 	@SyncanoField(name = FIELD_NAME, filterIndex = false, orderIndex = false)
 	public String name;

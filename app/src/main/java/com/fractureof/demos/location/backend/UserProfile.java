@@ -8,14 +8,14 @@ import java.util.Date;
 @SyncanoClass(name = "user_profile")
 public class UserProfile extends SyncanoObject  {
 
-	private static final String FIELD_DEFAULT_GEO_LOCATION = "default_geo_location";
+	public static final String FIELD_DEFAULT_GEO_LOCATION = "default_geo_location";
 	public static final String FIELD_FACEBOOK_ID = "facebook_id";
-	private static final String FIELD_FIRST_NAME = "first_name";
-	private static final String FIELD_LAST_NAME = "last_name";
-	private static final String FIELD_MIDDLE_NAME = "middle_name";
-	private static final String FIELD_NAME = "name";
-	private static final String FIELD_GENDER = "gender";
-	private static final String FIELD_PROFILE_PICTURE_URI = "profile_picture_uri";
+	public static final String FIELD_FIRST_NAME = "first_name";
+	public static final String FIELD_LAST_NAME = "last_name";
+	public static final String FIELD_MIDDLE_NAME = "middle_name";
+	public static final String FIELD_NAME = "name";
+	public static final String FIELD_GENDER = "gender";
+	public static final String FIELD_PROFILE_PICTURE_URI = "profile_picture_uri";
 
 	@SyncanoField(name = FIELD_DEFAULT_GEO_LOCATION, filterIndex = false, orderIndex = false)
 	public String defaultGeoLocation;
