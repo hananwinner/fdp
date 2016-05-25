@@ -1,6 +1,7 @@
 package com.fractureof.demos.location;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
@@ -10,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class SearchableActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -29,7 +31,9 @@ public class SearchableActivity extends AppCompatActivity implements SearchView.
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         // Assumes current activity is the searchable activity
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setSearchableInfo( searchManager.getSearchableInfo(
+                new ComponentName(this, SearchableActivity.class)
+                ));
         mSearchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         mSearchView.setIconified(false);
         return true;
@@ -47,10 +51,10 @@ public class SearchableActivity extends AppCompatActivity implements SearchView.
         Intent intent = getIntent();
         if ( Intent.ACTION_SEARCH.equals( intent.getAction() ) ) {
             mQuery = intent.getStringExtra(SearchManager.QUERY);
-
-
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String uri = intent.getDataString();
+            Toast.makeText(this, uri.toString(),Toast.LENGTH_LONG).show();
         }
-
     }
 
 
