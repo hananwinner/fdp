@@ -27,6 +27,8 @@ import okhttp3.OkHttpClient;
 
 public class PartnerSuggestionProvider extends ContentProvider {
 
+    PartnerSuggestionsServer mServer = PartnerSuggestionsServer.makePartnerSuggestionsServer();
+
     public PartnerSuggestionProvider() {
     }
 
@@ -60,10 +62,14 @@ public class PartnerSuggestionProvider extends ContentProvider {
     while searching, recent dates still appear even if last character dod not match (V2)
      */
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public synchronized Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        PartnerSuggestionsServer server = PartnerSuggestionsServer.makePartnerSuggestionsServer();
-        return server.getCursor(uri.getLastPathSegment());
+
+        String query = uri.getLastPathSegment();
+        if (query == "search_suggest_query") {
+            query = "";
+        }
+        return mServer.process(query);
     }
 
     @Override
