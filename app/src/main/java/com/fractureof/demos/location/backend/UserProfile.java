@@ -16,6 +16,7 @@ public class UserProfile extends SyncanoObject  {
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_GENDER = "gender";
 	public static final String FIELD_PROFILE_PICTURE_URI = "profile_picture_uri";
+	public static final String FIELD_NICKNAME = "nickname";
 
 	@SyncanoField(name = FIELD_DEFAULT_GEO_LOCATION, filterIndex = false, orderIndex = false)
 	public String defaultGeoLocation;
@@ -32,7 +33,7 @@ public class UserProfile extends SyncanoObject  {
 	@SyncanoField(name = FIELD_MIDDLE_NAME, filterIndex = false, orderIndex = false)
 	public String middleName;
 
-	@SyncanoField(name = FIELD_NAME, filterIndex = true, orderIndex = false)
+	@SyncanoField(name = FIELD_NAME, filterIndex = true, orderIndex = true)
 	public String name;
 
 	@SyncanoField(name = FIELD_GENDER, filterIndex = true, orderIndex = false)
@@ -40,5 +41,8 @@ public class UserProfile extends SyncanoObject  {
 
 	@SyncanoField(name = FIELD_PROFILE_PICTURE_URI, filterIndex = false, orderIndex = false)
 	public String profilePictureUri;
+
+	@SyncanoField(name = FIELD_NICKNAME, filterIndex = true, orderIndex = false)
+	public String nickname;
 
 }
