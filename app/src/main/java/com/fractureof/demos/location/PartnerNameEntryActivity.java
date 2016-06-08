@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,9 +19,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.fractureof.demos.location.backend.DatingPartner;
+import com.syncano.library.Syncano;
+import com.syncano.library.api.Response;
+
+import java.util.List;
+
 public class PartnerNameEntryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
 
+    Syncano mBackend = SplashActivity.syncano;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,44 +48,59 @@ public class PartnerNameEntryActivity extends AppCompatActivity implements
         drawerHeaderIcon.setImageDrawable(new RoundedAvatarDrawable(SplashActivity.avatarBitmap));
 
         EditText nameEntry = (EditText) findViewById(R.id.name_entry);
-        nameEntry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
-                intent.putExtra(SearchManager.QUERY,"");
-                startActivity(intent);
-                finish();
-            }
-        });
-        nameEntry.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
-                intent.putExtra(SearchManager.QUERY,"");
-                startActivity(intent);
-                finish();
-                return true;
-            }
-        });
-        nameEntry.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+        //get the id of dating partner if in the extra
+        Log.d("OnCreate","checking Intent");
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            int datingPartnerId = intent.getIntExtra(
+                SearchableActivity.Consts.datingPartnerId,
+                SearchableActivity.Consts.datingPartnerIdNotExists);
+            Log.d("OnCreate",String.format("checking Intent. id : %d",datingPartnerId));
 
-            }
+            nameEntry.setText("...");
+            nameEntry.setEnabled(false);
+        } else {
+            nameEntry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
+                    intent.putExtra(SearchManager.QUERY, "");
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            nameEntry.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
+                    intent.putExtra(SearchManager.QUERY, "");
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+            });
+            nameEntry.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
-                intent.putExtra(SearchManager.QUERY,s.toString());
-                startActivity(intent);
-                finish();
-            }
-        });
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
+                    intent.putExtra(SearchManager.QUERY, s.toString());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
 
     @Override

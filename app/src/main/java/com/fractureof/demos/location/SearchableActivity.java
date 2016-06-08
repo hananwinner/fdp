@@ -4,16 +4,23 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 public class SearchableActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+
+    public static class Consts {
+        public static String datingPartnerId =  "com.fractureof.demos.location.datingPartnerId";
+        public static int datingPartnerIdNotExists = -1;
+    }
 
     private String mQuery = "";
     SearchView mSearchView;
@@ -51,9 +58,31 @@ public class SearchableActivity extends AppCompatActivity implements SearchView.
         Intent intent = getIntent();
         if ( Intent.ACTION_SEARCH.equals( intent.getAction() ) ) {
             mQuery = intent.getStringExtra(SearchManager.QUERY);
+            Log.d("OnCreate",String.format("SEARCH : query: ",mQuery == null ? "none" : mQuery));
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String uri = intent.getDataString();
-            Toast.makeText(this, uri.toString(),Toast.LENGTH_LONG).show();
+            Log.d("OnCreate","VIEW");
+            String dataString = intent.getDataString();
+            Uri uri = Uri.parse(dataString);
+            String syncanoId = uri.getLastPathSegment();
+            Integer syncanoId_int = Integer.parseInt(syncanoId);
+
+
+            if (syncanoId_int == -1) {
+                //new Dating Partner Object shall be created.
+                // step back to partner name entry with the name set
+            }
+            Log.d("OnCreate",String.format("VIEW: ID : %d",syncanoId_int));
+            Intent partnerEntryNameIntent = new Intent(
+                    getApplicationContext(),
+                    PartnerNameEntryActivity.class);
+            partnerEntryNameIntent.putExtra(Consts.datingPartnerId,syncanoId_int);
+            partnerEntryNameIntent.setAction(Intent.ACTION_VIEW);
+            Log.d("OnCreate","starts partnerEntryNameIntent");
+            startActivity(partnerEntryNameIntent);
+            Log.d("OnCreate","started partnerEntryNameIntent");
+            finish();
+            Log.d("OnCreate","finished searchable activity");
+
         }
     }
 
