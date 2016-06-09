@@ -28,6 +28,10 @@ import java.util.List;
 public class PartnerNameEntryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
 
+    public static class Consts {
+        public static String datingPartnerFmtNameTmpReplacement = "...";
+    }
+
     Syncano mBackend = SplashActivity.syncano;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,25 @@ public class PartnerNameEntryActivity extends AppCompatActivity implements
         Log.d("OnCreate","checking Intent");
         Intent intent = getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-
             int datingPartnerId = intent.getIntExtra(
                 SearchableActivity.Consts.datingPartnerId,
                 SearchableActivity.Consts.datingPartnerIdNotExists);
             Log.d("OnCreate",String.format("checking Intent. id : %d",datingPartnerId));
+            if (datingPartnerId != SearchableActivity.Consts.datingPartnerIdNotExists) {
+                Log.d(this.getClass().getSimpleName(),
+                        "dating partner id not exists!");
+            }
+            String datingPartnerFmtName = intent.getStringExtra(
+                    SearchableActivity.Consts.datingPartnerFmtName
+            );
+            if (datingPartnerFmtName == null) {
+                datingPartnerFmtName = Consts.datingPartnerFmtNameTmpReplacement;
+                Log.d(this.getClass().getSimpleName(),"missing date formatted name");
+            } else {
+                Log.d(this.getClass().getSimpleName(),"date formatatted name exists");
+            }
 
-            nameEntry.setText("...");
+            nameEntry.setText(datingPartnerFmtName);
             nameEntry.setEnabled(false);
         } else {
             nameEntry.setOnClickListener(new View.OnClickListener() {

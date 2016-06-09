@@ -114,13 +114,27 @@ public class SearchableActivity
 
     @Override
     public void onPartnerSelected(int idx) {
+        Log.d(this.getClass().getSimpleName(),
+                String.format("Partner selected using index %d.",idx));
         Intent partnerEntryNameIntent = new Intent(
             getApplicationContext(),
             PartnerNameEntryActivity.class);
         partnerEntryNameIntent.setAction(Intent.ACTION_VIEW);
         PartnerSearchAdapter.PartnerSearchModel item = mPartnerResults.get(idx);
-        partnerEntryNameIntent.putExtra(Consts.datingPartnerId,item.partnerBackendId);
-        partnerEntryNameIntent.putExtra(Consts.datingPartnerFmtName,item.formattedName);
+        int partnerBackendId = item.partnerBackendId;
+        String formattedName = item.formattedName;
+
+        //the task of creating the new partner record is deferred to a loader in.
+        //A module responsible of creating things as we go.
+        //an activity checks on loadfer
+        //we need to create this item, because we would like to proceed with the
+        //
+
+        Log.d(this.getClass().getSimpleName(),
+                String.format("Partner properties being put as Extra: syncano id: %d, fmtName: %s",
+                        partnerBackendId, formattedName));
+        partnerEntryNameIntent.putExtra(Consts.datingPartnerId,partnerBackendId);
+        partnerEntryNameIntent.putExtra(Consts.datingPartnerFmtName,formattedName);
         startActivity(partnerEntryNameIntent);
         finish();
     }
