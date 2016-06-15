@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_partner_name_entry" />
+    <include layout="@layout/content_date_plan" />
 
 
 </android.support.design.widget.CoordinatorLayout>

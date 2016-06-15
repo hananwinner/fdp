@@ -12,18 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.fractureof.demos.location.backend.DatingPartner;
 import com.syncano.library.Syncano;
-import com.syncano.library.api.Response;
-
-import java.util.List;
 
 public class PartnerNameEntryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
@@ -36,7 +31,7 @@ public class PartnerNameEntryActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_partner_name_entry);
+        setContentView(R.layout.activity_plan_date);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_partner_entry"
-        app:menu="@menu/activity_partner_entry_drawer" />
+        app:headerLayout="@layout/nav_header_plan_date"
+        app:menu="@menu/activity_plan_date_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
