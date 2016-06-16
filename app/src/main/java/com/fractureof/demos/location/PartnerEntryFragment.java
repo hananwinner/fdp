@@ -39,11 +39,10 @@ public class PartnerEntryFragment extends Fragment {
      * @return A new instance of fragment PartnerEntryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PartnerEntryFragment newInstance(String param1, String param2) {
+    public static PartnerEntryFragment newInstance(String partnerFmtName) {
         PartnerEntryFragment fragment = new PartnerEntryFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(Consts.ARG_PARTNER_FMT_NAME, partnerFmtName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +51,7 @@ public class PartnerEntryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mPartnerFmtName = getArguments().getString(Consts.ARG_PARTNER_FMT_NAME);
         }
     }
 
@@ -64,12 +62,12 @@ public class PartnerEntryFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_partner_entry, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
     @Override
     public void onAttach(Context context) {
