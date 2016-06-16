@@ -18,7 +18,6 @@ import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.fractureof.demos.location.backend.UserProfile;
 import com.fractureof.demos.location.backend.UserProfileDecorator;
-import com.fractureof.demos.location.backend.codebox.HangoutsResponse;
 import com.fractureof.demos.location.dummy.DatePlansContent;
 import com.fractureof.demos.location.logic.profile.SocialProfile;
 import com.fractureof.demos.location.logic.profile.SocialProfileLoader;
@@ -65,7 +64,6 @@ public class SplashActivity extends AppCompatActivity {
     public static LatLng temp_part_latLng = new LatLng(32.09353299999999f, 34.783258f);
     public static String temp_partner_geo_id = "ChIJL1AsW_JLHRURaRVnUxu6HSg";
     public static String list_str = "";
-    //public static Collection<HangoutsResponse> hangoutsList;
     public static JSONArray hangout_arr;
     public static JSONArray date_plans_arr;
     public static float temp_me_lat = 32.0800473f;
