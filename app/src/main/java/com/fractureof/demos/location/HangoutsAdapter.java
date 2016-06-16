@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
-import com.fractureof.demos.location.backend.codebox.PojoHangoutResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
