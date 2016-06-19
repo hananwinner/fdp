@@ -12,12 +12,21 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PartnerEntryFragment.OnFragmentInteractionListener} interface
+ * {@link PartnerNameEntryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PartnerEntryFragment#newInstance} factory method to
+ * Use the {@link PartnerNameEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PartnerEntryFragment extends Fragment {
+public class PartnerNameEntryFragment extends Fragment {
+    private static final String ARG_KEY = "key";
+    public static Fragment create(String key) {
+        Bundle args = new Bundle();
+        args.putString(ARG_KEY,key);
+        PartnerNameEntryFragment fragment = new PartnerNameEntryFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static class Consts {
         public static String datingPartnerFmtNameTmpReplacement = "...";
         public static String ARG_PARTNER_FMT_NAME = "partnerFmtName";
@@ -26,7 +35,7 @@ public class PartnerEntryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PartnerEntryFragment() {
+    public PartnerNameEntryFragment() {
         // Required empty public constructor
     }
 
@@ -34,13 +43,11 @@ public class PartnerEntryFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PartnerEntryFragment.
+     * @return A new instance of fragment PartnerNameEntryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PartnerEntryFragment newInstance(String partnerFmtName) {
-        PartnerEntryFragment fragment = new PartnerEntryFragment();
+    public static PartnerNameEntryFragment newInstance(String partnerFmtName) {
+        PartnerNameEntryFragment fragment = new PartnerNameEntryFragment();
         Bundle args = new Bundle();
         args.putString(Consts.ARG_PARTNER_FMT_NAME, partnerFmtName);
         fragment.setArguments(args);
@@ -59,7 +66,7 @@ public class PartnerEntryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_partner_entry, container, false);
+        return inflater.inflate(R.layout.fragment_partner_name_entry, container, false);
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
