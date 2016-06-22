@@ -1,12 +1,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/WizardPageContainer">
-
     <TextView style="@style/WizardPageTitle" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow>
+    <ImageButton
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="16dp"
+        android:id="@+id/dates_time_tonight_button"
+        android:src="@drawable/moon"
+        android:background="@android:color/transparent"
+        />
+        <TextView
+            android:text="@string/dates_time_tonight"
+            android:gravity="left" />
+        </TableRow>
+        <TableRow>
+    <ImageButton
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="16dp"
+        android:id="@+id/dates_time_tomorrow_night_button"
+        android:src="@drawable/star"
+        android:background="@android:color/transparent"
+        />
+        <TextView
+            android:text="@string/dates_time_tomorrow_night"
+            android:gravity="left" />
+        </TableRow>
+        <TableRow>
+    <ImageButton
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="16dp"
         android:id="@+id/test_button_date_time_fragment"
-        android:text="click it!"/>
+        android:src="@drawable/clock"
+        android:background="@android:color/transparent"
+        />
+            <TextView
+                android:text="@string/dates_time_set"
+                android:gravity="bottom" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

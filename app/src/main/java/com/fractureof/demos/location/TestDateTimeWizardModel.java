@@ -16,7 +16,7 @@ public class TestDateTimeWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
         return new PageList(
-                new DateTimePage(this,"Time Picker").setRequired(true)
+                new DateTimePage(this,"Date's Time").setRequired(true)
         );
     }
 }

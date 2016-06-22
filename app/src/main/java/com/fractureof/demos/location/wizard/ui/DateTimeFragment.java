@@ -2,25 +2,22 @@ package com.fractureof.demos.location.wizard.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fractureof.demos.location.R;
+import com.fractureof.demos.location.dialogs.DatePickerFragment;
+import com.fractureof.demos.location.dialogs.TimePickerFragment;
 import com.fractureof.demos.location.wizard.model.DateTimePage;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DateTimeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DateTimeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class DateTimeFragment extends Fragment {
+public class DateTimeFragment extends Fragment
+        implements TimePickerFragment.DatesTimePickerListener
+        ,DatePickerFragment.DatesDateSetListener {
 
     private static final String ARG_KEY = "key";
 
@@ -28,7 +25,7 @@ public class DateTimeFragment extends Fragment {
     private DateTimePage mPage;
     private PageFragmentCallbacks mCallbacks;
 
-    private Button mTestButton;
+    private ImageButton mTestButton;
 
     public DateTimeFragment() {
         // Required empty public constructor
@@ -50,10 +47,6 @@ public class DateTimeFragment extends Fragment {
             mKey = args.getString(ARG_KEY);
             mPage = (DateTimePage) mCallbacks.onGetPage(mKey);
         }
-
-
-
-
     }
 
     @Override
@@ -61,28 +54,23 @@ public class DateTimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_date_time, container, false);
-        mTestButton = (Button) rootView.findViewById(R.id.test_button_date_time_fragment);
+        mTestButton = (ImageButton) rootView.findViewById(R.id.test_button_date_time_fragment);
         mTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPage.getData().putString( DateTimePage.DATETIME_DATA_KEY, "21/06/2016 21:00:00");
-                mPage.notifyDataChanged();
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        "DatesDatePicker"
+                );
             }
         });
+
+
+
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
-
-
-
         return rootView;
-
     }
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
 
     @Override
     public void onAttach(Context context) {
@@ -100,5 +88,26 @@ public class DateTimeFragment extends Fragment {
         super.onDetach();
         mCallbacks = null;
     }
+
+    @Override
+    public void onDatesTimePicked(int hour, int minute) {
+        mPage.getData().putInt(DateTimePage.DATESTIME_YEAR_DATA_KEY, hour );
+        mPage.getData().putInt(DateTimePage.DATESTIME_MINUTE_DATA_KEY, minute );
+    }
+
+    @Override
+    public void onDatesDatePicked(int year, int monthOfYear, int dayOfMonth) {
+        mPage.getData().putInt(DateTimePage.DATESTIME_YEAR_DATA_KEY, year );
+        mPage.getData().putInt(DateTimePage.DATESTIME_MONTH_DATA_KEY, monthOfYear );
+        mPage.getData().putInt(DateTimePage.DATESTIME_DAY_OF_MONTH_DATA_KEY, dayOfMonth );
+
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(
+                getActivity().getSupportFragmentManager(),
+                "DatesTimePicker"
+        );
+
+    }
+
 
 }

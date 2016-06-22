@@ -13,6 +13,11 @@ import java.util.ArrayList;
  */
 public class DateTimePage extends Page {
     public static final String DATETIME_DATA_KEY = "datetime";
+    public static final String DATESTIME_HOUR_DATA_KEY = "DATESTIME_HOUR";
+    public static final String DATESTIME_MINUTE_DATA_KEY = "DATESTIME_MINUTE";
+    public static final String DATESTIME_YEAR_DATA_KEY = "DATESTIME_YEAR";
+    public static final String DATESTIME_MONTH_DATA_KEY = "DATESTIME_MONTH";
+    public static final String DATESTIME_DAY_OF_MONTH_DATA_KEY = "DATESTIME_DAY_OF_MONTH";
     public DateTimePage(ModelCallbacks callbacks, String title)
     {
         super(callbacks, title);
@@ -24,6 +29,9 @@ public class DateTimePage extends Page {
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
+
+        DateTimeFormatter.
+
         dest.add(new ReviewItem("Date time", mData.getString(DATETIME_DATA_KEY), getKey(), -1));
     }
 
