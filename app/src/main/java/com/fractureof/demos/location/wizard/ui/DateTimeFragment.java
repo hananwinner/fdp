@@ -1,31 +1,55 @@
 package com.fractureof.demos.location.wizard.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fractureof.demos.location.R;
 import com.fractureof.demos.location.dialogs.DatePickerFragment;
 import com.fractureof.demos.location.dialogs.TimePickerFragment;
-import com.fractureof.demos.location.wizard.model.DateTimePage;
+import com.fractureof.demos.location.util.DateTimeFormat;
+import com.fractureof.demos.location.wizard.model.DatesTimePage;
 
-public class DateTimeFragment extends Fragment
-        implements TimePickerFragment.DatesTimePickerListener
-        ,DatePickerFragment.DatesDateSetListener {
+import java.util.Calendar;
+
+public class DateTimeFragment
+        extends Fragment
+        implements
+        DatePickerFragment.DatesDatePickerListener
+        , TimePickerFragment.DatesTimePickerListener  {
 
     private static final String ARG_KEY = "key";
-
     private String mKey;
-    private DateTimePage mPage;
+    private DatesTimePage mPage;
     private PageFragmentCallbacks mCallbacks;
 
-    private ImageButton mTestButton;
+    private ImageButton mTonightButton;
+    private ImageButton mCustomButton;
+    private ImageButton mTommorowButton;
+
+    private TextView mTonightText;
+    private TextView mTomorrowNightText;
+    private TextView mCustomTimeText;
+
+    private TableRow mTonightTableRow;
+    private TableRow mTomorrowTableRow;
+    private TableRow mCustomTimeTableRow;
+
+    private int mStackLevel = 0;
+    private FragmentTransaction mDialogsFragmentTransaction;
+    public static final int SET_DATES_DATE_DIALOG = 1;
+    public static final int SET_DATES_TIME_DIALOG = 2;
+    public static final String DIALOG_ARG_ACTIVATORROWID = "activatorRowId";
 
     public DateTimeFragment() {
         // Required empty public constructor
@@ -45,7 +69,37 @@ public class DateTimeFragment extends Fragment
         Bundle args = getArguments();
         if (args != null) {
             mKey = args.getString(ARG_KEY);
-            mPage = (DateTimePage) mCallbacks.onGetPage(mKey);
+            mPage = (DatesTimePage) mCallbacks.onGetPage(mKey);
+        }
+        if (savedInstanceState != null) {
+            mStackLevel = savedInstanceState.getInt("level");
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("level", mStackLevel);
+    }
+
+    void showDialog(int type, int activatorRowId) {
+        Bundle args = new Bundle();
+        args.putInt(DateTimeFragment.DIALOG_ARG_ACTIVATORROWID,activatorRowId);
+
+        switch(type) {
+            case SET_DATES_DATE_DIALOG: {
+                DialogFragment dialogFrag = new DatePickerFragment();
+                dialogFrag.setArguments(args);
+                dialogFrag.setTargetFragment(this, SET_DATES_DATE_DIALOG);
+                dialogFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "SET_DATES_DATE_DIALOG");
+                break;
+            }
+            case SET_DATES_TIME_DIALOG: {
+                DialogFragment dialogFrag = new TimePickerFragment();
+                dialogFrag.setArguments(args);
+                dialogFrag.setTargetFragment(this, SET_DATES_TIME_DIALOG);
+                dialogFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "SET_DATES_TIME_DIALOG");
+                break;
+            }
         }
     }
 
@@ -54,19 +108,50 @@ public class DateTimeFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_date_time, container, false);
-        mTestButton = (ImageButton) rootView.findViewById(R.id.test_button_date_time_fragment);
-        mTestButton.setOnClickListener(new View.OnClickListener() {
+
+        mTonightButton= (ImageButton) rootView.findViewById(R.id.dates_time_tonight_button);
+        mTonightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(
-                        getActivity().getSupportFragmentManager(),
-                        "DatesDatePicker"
-                );
+                Calendar calendar = Calendar.getInstance();
+                int y = calendar.get(Calendar.YEAR);
+                int m = calendar.get(Calendar.MONTH);
+                int d = calendar.get(Calendar.DAY_OF_MONTH);
+                mYearToCommit = y;
+                mMonthOfYearToCommit = m;
+                mDayOfMonthToCommit = d;
+                showDialog(SET_DATES_TIME_DIALOG,R.id.dates_time_tonight_table_row);
             }
         });
+        mTommorowButton = (ImageButton) rootView.findViewById(R.id.dates_time_tomorrow_night_button);
+        mTommorowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH,1);
+                int y = calendar.get(Calendar.YEAR);
+                int m = calendar.get(Calendar.MONTH);
+                int d = calendar.get(Calendar.DAY_OF_MONTH);
+                mYearToCommit = y;
+                mMonthOfYearToCommit = m;
+                mDayOfMonthToCommit = d;
+                showDialog(SET_DATES_TIME_DIALOG,R.id.dates_time_tomorrow_table_row);
+            }
+        });
+        mCustomButton = (ImageButton) rootView.findViewById(R.id.test_button_date_time_fragment);
+        mCustomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(SET_DATES_DATE_DIALOG,R.id.dates_time_custom_table_row);
+            }
+        });
+        mTonightText = (TextView) rootView.findViewById(R.id.date_time_tonight_text);
+        mTomorrowNightText = (TextView) rootView.findViewById(R.id.date_time_tommorow_text);
+        mCustomTimeText= (TextView) rootView.findViewById(R.id.date_time_custom_text);
 
-
+        mTonightTableRow = (TableRow) rootView.findViewById(R.id.dates_time_tonight_table_row);
+        mTomorrowTableRow = (TableRow) rootView.findViewById(R.id.dates_time_tomorrow_table_row);
+        mCustomTimeTableRow = (TableRow) rootView.findViewById(R.id.dates_time_custom_table_row);
 
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
         return rootView;
@@ -89,25 +174,63 @@ public class DateTimeFragment extends Fragment
         mCallbacks = null;
     }
 
+    private int mYearToCommit = -1;
+    private int mMonthOfYearToCommit = -1;
+    private int mDayOfMonthToCommit = -1;
+
     @Override
-    public void onDatesTimePicked(int hour, int minute) {
-        mPage.getData().putInt(DateTimePage.DATESTIME_YEAR_DATA_KEY, hour );
-        mPage.getData().putInt(DateTimePage.DATESTIME_MINUTE_DATA_KEY, minute );
+    public void onDatesDatePicked(int activatorRowId,int year, int monthOfYear, int dayOfMonth) {
+        mYearToCommit = year;
+        mMonthOfYearToCommit = monthOfYear;
+        mDayOfMonthToCommit = dayOfMonth;
+        showDialog(SET_DATES_TIME_DIALOG, activatorRowId);
     }
 
     @Override
-    public void onDatesDatePicked(int year, int monthOfYear, int dayOfMonth) {
-        mPage.getData().putInt(DateTimePage.DATESTIME_YEAR_DATA_KEY, year );
-        mPage.getData().putInt(DateTimePage.DATESTIME_MONTH_DATA_KEY, monthOfYear );
-        mPage.getData().putInt(DateTimePage.DATESTIME_DAY_OF_MONTH_DATA_KEY, dayOfMonth );
+    public void onDatesTimePicked(int activatorRowId,int hour, int minute) {
+        mPage.getData().putInt(DatesTimePage.DATESTIME_YEAR_DATA_KEY, mYearToCommit );
+        mPage.getData().putInt(DatesTimePage.DATESTIME_MONTH_DATA_KEY, mMonthOfYearToCommit);
+        mPage.getData().putInt(DatesTimePage.DATESTIME_DAY_OF_MONTH_DATA_KEY, mDayOfMonthToCommit );
+        resetTemporaryDateValues();
+        mPage.getData().putInt(DatesTimePage.DATESTIME_HOUR_DATA_KEY, hour);
+        mPage.getData().putInt(DatesTimePage.DATESTIME_MINUTE_DATA_KEY, minute );
+        mPage.notifyDataChanged();
 
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(
-                getActivity().getSupportFragmentManager(),
-                "DatesTimePicker"
-        );
+        resetRows();
+        Calendar calendar = mPage.getDatesTime();
+        String simpleDateDesc = DateTimeFormat.make_simple_date_desc(calendar);
+        String hourStr= DateTimeFormat.getFormattedHour( calendar );
+        String label = String.format("%s\n%s", simpleDateDesc,hourStr);
 
+        int selectedColor = this.getResources().getColor(R.color.dates_time_highlight_row
+               /* , this.getContext().getTheme()*/);
+        if (mTonightTableRow.getId() == (activatorRowId)) {
+            mTonightTableRow.setBackgroundColor(selectedColor);
+            mTonightText.setText(label);
+        }
+        if (mTomorrowTableRow.getId() == (activatorRowId)) {
+            mTomorrowTableRow.setBackgroundColor(selectedColor);
+            mTomorrowNightText.setText(label);
+        }
+        if (mCustomTimeTableRow.getId() == (activatorRowId)) {
+            mCustomTimeTableRow.setBackgroundColor(selectedColor);
+            mCustomTimeText.setText(label);
+        }
+
+        Toast.makeText(this.getContext(), "It's a Date !",Toast.LENGTH_LONG).show();
     }
 
-
+    private void resetTemporaryDateValues() {
+        mYearToCommit = -1;
+        mMonthOfYearToCommit = -1;
+        mDayOfMonthToCommit = -1;
+    }
+    private void resetRows() {
+        mTomorrowTableRow.setBackgroundColor(Color.TRANSPARENT);
+        mTonightTableRow.setBackgroundColor(Color.TRANSPARENT);
+        mCustomTimeTableRow.setBackgroundColor(Color.TRANSPARENT);
+        mTonightText.setText(R.string.dates_time_tonight);
+        mTomorrowNightText.setText(R.string.dates_time_tomorrow_night);
+        mCustomTimeText.setText(R.string.dates_time_set);
+    }
 }
