@@ -1,19 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.fractureof.demos.location">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fractureof.demos.location">
 
-<!--
+    <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-<application android:allowBackup="true" android:icon="@mipmap/first_date_icon_purple_launcher"
-    android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/first_date_icon_purple_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
-    <!--
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -21,49 +26,82 @@ package="com.fractureof.demos.location">
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
-    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
-
-    <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity android:name=".MapsActivity" android:label="@string/title_activity_maps" />
-    <activity android:name=".PartnerEntryActivity" android:label="@string/title_activity_partner_entry"
-        android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".PartnerNameEntryActivity" android:label="@string/title_activity_partner_entry"
-        android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".PlansListActivity" android:label="@string/title_plans_list"
-        android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".PlansDetailActivity" android:label="@string/title_plans_detail"
-        android:parentActivityName=".PlansListActivity" android:theme="@style/AppTheme.NoActionBar">
-        <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.fractureof.demos.location.PlansListActivity" />
-    </activity>
-    <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-        android:label="@string/app_name" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-    <provider android:name="com.facebook.FacebookContentProvider" android:authorities="com.facebook.app.FacebookContentProvider1587770274876000"
-        android:exported="true" />
-
-    <activity android:name=".FacebookLoginActivity" />
-    <activity android:name=".SearchableActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-        </intent-filter>
-
-        <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
-    </activity>
-
-    <provider android:name="com.fractureof.demos.location.PartnerSuggestionProvider"
-        android:authorities="com.fractureof.demos.location.partnersuggestion" android:exported="true"
-        android:enabled="true"></provider>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
 
-</application>
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".PartnerEntryActivity"
+            android:label="@string/title_activity_partner_entry"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PartnerNameEntryActivity"
+            android:label="@string/title_activity_partner_entry"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlansListActivity"
+            android:label="@string/title_plans_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlansDetailActivity"
+            android:label="@string/title_plans_detail"
+            android:parentActivityName=".PlansListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fractureof.demos.location.PlansListActivity" />
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1587770274876000"
+            android:exported="true" />
 
+        <activity android:name=".FacebookLoginActivity" />
+        <activity android:name=".SearchableActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <provider
+            android:name=".PartnerSuggestionProvider"
+            android:authorities="com.fractureof.demos.location.partnersuggestion"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".MainForDateTimePageActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
