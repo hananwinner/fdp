@@ -104,7 +104,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(getApplicationContext(), PartnerNameEntryActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainForDateTimePageActivity.class);
             startActivity(intent);
             finish();
         }

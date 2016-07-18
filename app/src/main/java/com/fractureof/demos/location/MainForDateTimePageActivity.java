@@ -1,12 +1,19 @@
 package com.fractureof.demos.location;
 
+import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.fractureof.demos.location.wizard.model.AbstractWizardModel;
 import com.fractureof.demos.location.wizard.model.ModelCallbacks;
@@ -17,10 +24,12 @@ import com.fractureof.demos.location.wizard.ui.StepPagerStrip;
 
 import java.util.List;
 
-public class MainForDateTimePageActivity extends FragmentActivity implements
+public class MainForDateTimePageActivity extends android.support.v7.app.ActionBarActivity implements
         PageFragmentCallbacks,
         ReviewFragment.Callbacks,
-        ModelCallbacks {
+        ModelCallbacks
+        , NavigationView.OnNavigationItemSelectedListener
+{
 
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
@@ -40,7 +49,7 @@ public class MainForDateTimePageActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_for_date_time_page);
+        setContentView(R.layout.activity_wizard);
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
         }
@@ -80,6 +89,20 @@ public class MainForDateTimePageActivity extends FragmentActivity implements
         });
 
         onPageTreeChanged();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ImageView drawerHeaderIcon = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_icon);
+        drawerHeaderIcon.setImageDrawable(new RoundedAvatarDrawable(SplashActivity.avatarBitmap));
 
     }
 
@@ -147,6 +170,33 @@ public class MainForDateTimePageActivity extends FragmentActivity implements
                 //updateBottomBar();
                 break;
             }
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_date_plans) {
+            // Handle the camera action
+            Intent intent = new Intent(getApplicationContext(), PlansListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
