@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
+import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -86,6 +87,16 @@ public class SplashActivity extends AppCompatActivity {
         UserProfileDecorator userProfileDecorator =  loader.load();
         SplashActivity.fdp_user_profile = userProfileDecorator.mUserProfile;
         SplashActivity.avatarBitmap = userProfileDecorator.mAvatarBitmap;
+
+        Response<List<DatePlan>> result =
+                SplashActivity.syncano.please(DatePlan.class)
+                        .where().eq(DatePlan.FIELD_ID, 23).get();
+        if (result.isSuccess()) {
+            List<DatePlan> data = result.getData();
+            if (data.size() == 1) {
+                SplashActivity.v1DatePlan = data.get(0);
+            }
+        }
     }
 
     class RetrieveMockSocial extends AsyncTask<Void, Void, Void> {
