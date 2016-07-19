@@ -49,14 +49,10 @@ retrieve pubs within 50 km from partner
  */
 
 public class SplashActivity extends AppCompatActivity {
-
-
-
     public static Syncano syncano =
 //            Syncano.init("83d5b6d706b3584108ac8c543a0b4809c9a4a8a5", "polished-night-6282");
             Syncano.init("3019540e5c2a045ad745b4e52741041adeea3a10", "polished-night-6282");
     public static Bitmap avatarBitmap = null;
-
     public static float temp_hangout_distance = 50.0f;
     public static String temp_hangout_vicinity = "partner";
     public static String temp_me_geo_id = "Ei9TZGVyb3QgRGF2aWQgSGFNZWxlY2ggMzUsIFRlbCBBdml2LVlhZm8sIElzcmFlbA";
@@ -129,18 +125,6 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void...params) {
-
-//            Response<UserProfile> result = syncano.getObject(UserProfile.class, Integer.decode("11").intValue()).send();
-//            if (result.isSuccess()) {
-//                fdp_user_profile = result.getData();
-//                try {
-//                    avatarBitmap = Picasso.with(getApplicationContext()).load(url1).get();
-//                } catch (IOException ex) { }
-//            } else {
-//                try {
-//                    avatarBitmap = Picasso.with(getApplicationContext()).load(R.drawable.me_avatar_default).get();
-//                } catch (IOException ex) { }
-//            }
             try {
                 SplashActivity.partnerMarkerBitmap = Picasso.with(getApplicationContext()).load(R.drawable.partner_marker).get();
             } catch (IOException ex) {}
