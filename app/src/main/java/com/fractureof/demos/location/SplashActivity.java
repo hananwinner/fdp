@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.Profile;
+import com.fractureof.demos.location.backend.DatePlan;
 import com.fractureof.demos.location.backend.UserProfile;
 import com.fractureof.demos.location.backend.UserProfileDecorator;
 import com.fractureof.demos.location.dummy.DatePlansContent;
@@ -70,6 +71,8 @@ public class SplashActivity extends AppCompatActivity {
     public static Bitmap fPartnerQm;
     public static UserProfile fdp_user_profile;
     public static Profile facebookProfile;
+    public static DatePlan v1DatePlan ;
+
 //    public static Syncano syncano_user_create = Syncano.init("47cf12b867de776e9a0a099c65324c1ae1fb1bbb", "polished-night-6282");
     //public static AccessToken fb_acc_token;
 
