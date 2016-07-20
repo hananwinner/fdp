@@ -39,8 +39,9 @@ public abstract class Page implements PageTreeNode {
     protected String mTitle;
     protected boolean mRequired = false;
     protected String mParentKey;
+    private int mNumInSequence;
 
-    protected Page(ModelCallbacks callbacks, String title) {
+    protected Page(ModelCallbacks callbacks, String title, int numInSequence) {
         mCallbacks = callbacks;
         mTitle = title;
     }
@@ -95,5 +96,8 @@ public abstract class Page implements PageTreeNode {
     public Page setRequired(boolean required) {
         mRequired = required;
         return this;
+    }
+    public int getNumInSequence() {
+        return mNumInSequence;
     }
 }

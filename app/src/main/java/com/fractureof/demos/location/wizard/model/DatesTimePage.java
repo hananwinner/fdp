@@ -2,25 +2,44 @@ package com.fractureof.demos.location.wizard.model;
 
 import android.support.v4.app.Fragment;
 
+import com.fractureof.demos.location.backend.DatePlan;
 import com.fractureof.demos.location.util.DateTimeFormat;
 import com.fractureof.demos.location.wizard.ui.DateTimeFragment;
+import com.syncano.library.data.SyncanoObject;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by tyler on 19/06/2016.
  */
-public class DatesTimePage extends Page {
+public class DatesTimePage extends BackendPage {
     public static final String DATESTIME_HOUR_DATA_KEY = "DATESTIME_HOUR";
     public static final String DATESTIME_MINUTE_DATA_KEY = "DATESTIME_MINUTE";
     public static final String DATESTIME_YEAR_DATA_KEY = "DATESTIME_YEAR";
     public static final String DATESTIME_MONTH_DATA_KEY = "DATESTIME_MONTH";
     public static final String DATESTIME_DAY_OF_MONTH_DATA_KEY = "DATESTIME_DAY_OF_MONTH";
-    public DatesTimePage(ModelCallbacks callbacks, String title)
+    private DatePlan mDatePlan;
+    private List<SyncanoObject> mSyncanoBackendObjects;
+    public DatesTimePage(ModelCallbacks callbacks, String title, DatePlan datePlan)
     {
         super(callbacks, title);
         initValues();
+        mDatePlan = datePlan;
+        mSyncanoBackendObjects = new ArrayList<SyncanoObject>(1);
+        mSyncanoBackendObjects.add(0,datePlan);
+
+    }
+
+    /*
+        pre: is completed.
+     */
+    @Override
+    public List<SyncanoObject> getSyncanoBackendObjects() {
+        mDatePlan.dateTime.setTime(getDatesTime().getTimeInMillis());
+        return mSyncanoBackendObjects;
     }
 
     private void initValues() {

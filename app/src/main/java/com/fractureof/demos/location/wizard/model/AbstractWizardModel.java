@@ -16,8 +16,12 @@
 
 package com.fractureof.demos.location.wizard.model;
 
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
+
+import com.syncano.library.data.SyncanoObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +33,16 @@ import java.util.List;
  * To create an actual wizard model, extend this class and implement {@link #onNewRootPageList()}.
  */
 public abstract class AbstractWizardModel implements ModelCallbacks {
+    private LoaderManager mLoaderManager;
     protected Context mContext;
 
     private List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
     private PageList mRootPageList;
 
-    public AbstractWizardModel(Context context) {
+    public AbstractWizardModel(Context context, LoaderManager loaderManager) {
         mContext = context;
         mRootPageList = onNewRootPageList();
+        mLoaderManager = loaderManager;
     }
 
     /**
@@ -50,6 +56,17 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < mListeners.size(); i++) {
             mListeners.get(i).onPageDataChanged(page);
+        }
+        BackendPage backendPage  = (BackendPage) page;
+        if (backendPage != null) {
+            if (backendPage.isCompleted()) {
+                List<SyncanoObject> syncanoBackendObjects = backendPage.getSyncanoBackendObjects();
+                for (SyncanoObject syncanoBackendObject : syncanoBackendObjects) {
+                    mLoaderManager.initLoader(backendPage.getNumInSequence(),null,this);
+
+
+                }
+            }
         }
     }
 

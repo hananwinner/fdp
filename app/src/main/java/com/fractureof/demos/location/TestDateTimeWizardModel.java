@@ -1,6 +1,7 @@
 package com.fractureof.demos.location;
 
 import android.content.Context;
+import android.support.v4.app.LoaderManager;
 
 import com.fractureof.demos.location.wizard.model.AbstractWizardModel;
 import com.fractureof.demos.location.wizard.model.PageList;
@@ -15,13 +16,13 @@ public class TestDateTimeWizardModel extends AbstractWizardModel {
         public static String DATESTIME_PAGE_TITLE = "Date's Time";
     }
 
-    public TestDateTimeWizardModel(Context context) {
-        super(context);
+    public TestDateTimeWizardModel(Context context, LoaderManager loaderManager) {
+        super(context, loaderManager);
     }
     @Override
     protected PageList onNewRootPageList() {
         return new PageList(
-                new DatesTimePage(this,Consts.DATESTIME_PAGE_TITLE).setRequired(true)
+                new DatesTimePage(this,Consts.DATESTIME_PAGE_TITLE, SplashActivity.v1DatePlan).setRequired(true)
         );
     }
 }
