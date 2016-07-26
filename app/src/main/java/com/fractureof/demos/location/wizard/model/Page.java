@@ -16,21 +16,37 @@
 
 package com.fractureof.demos.location.wizard.model;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+
+import com.fractureof.demos.location.SplashActivity;
+import com.syncano.library.api.Response;
+import com.syncano.library.data.SyncanoObject;
 
 import java.util.ArrayList;
 
 /**
  * Represents a single page in the wizard.
  */
-public abstract class Page implements PageTreeNode {
+public abstract class Page implements
+        PageTreeNode,
+        LoaderManager.LoaderCallbacks<Response<SyncanoObject>> {
     /**
      * The key into {@link #getData()} used for wizards with simple (single) values.
      */
     public static final String SIMPLE_DATA_KEY = "_";
 
     protected ModelCallbacks mCallbacks;
+
+    protected SyncanoObject mBackendObject = null;
+    private Context mContext;
+    private LoaderManager mLoaderMananger;
+    private int mPageId;
 
     /**
      * Current wizard values/selections.
@@ -39,11 +55,17 @@ public abstract class Page implements PageTreeNode {
     protected String mTitle;
     protected boolean mRequired = false;
     protected String mParentKey;
-    private int mNumInSequence;
 
-    protected Page(ModelCallbacks callbacks, String title, int numInSequence) {
+    protected Page(ModelCallbacks callbacks,
+                   String title,
+                   Context context,
+                   LoaderManager loaderManager,
+                   int pageId) {
         mCallbacks = callbacks;
         mTitle = title;
+        mContext = context;
+        mLoaderMananger = loaderManager;
+        mPageId = pageId;
     }
 
     public Bundle getData() {
@@ -90,6 +112,7 @@ public abstract class Page implements PageTreeNode {
     }
 
     public void notifyDataChanged() {
+        mLoaderMananger.initLoader(mPageId,null,this);
         mCallbacks.onPageDataChanged(this);
     }
 
@@ -97,7 +120,30 @@ public abstract class Page implements PageTreeNode {
         mRequired = required;
         return this;
     }
-    public int getNumInSequence() {
-        return mNumInSequence;
+
+    @Override
+    public Loader<Response<SyncanoObject>> onCreateLoader(int id, Bundle args) {
+        return new SynchronizeBackendObject(mContext);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Response<SyncanoObject>> loader, Response<SyncanoObject> data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Response<SyncanoObject>> loader) {
+
+    }
+
+    class SynchronizeBackendObject extends AsyncTaskLoader<Response<SyncanoObject>> {
+        public SynchronizeBackendObject(Context context) {
+            super(context);
+        }
+
+        @Override
+        public Response<SyncanoObject> loadInBackground() {
+            return mBackendObject.save();
+        }
     }
 }

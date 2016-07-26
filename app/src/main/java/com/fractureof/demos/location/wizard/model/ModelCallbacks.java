@@ -16,6 +16,8 @@
 
 package com.fractureof.demos.location.wizard.model;
 
+import com.fractureof.demos.location.backend.DatePlan;
+
 /**
  * Callback interface connecting {@link Page}, {@link AbstractWizardModel}, and model container
  * objects (e.g. {@link com.fractureof.demos.location.MainActivity}.
@@ -23,4 +25,7 @@ package com.fractureof.demos.location.wizard.model;
 public interface ModelCallbacks {
     void onPageDataChanged(Page page);
     void onPageTreeChanged();
+    DatePlan getDatePlan();
+    Context getContext();
+    LoaderMananger getLoaderManager();
 }

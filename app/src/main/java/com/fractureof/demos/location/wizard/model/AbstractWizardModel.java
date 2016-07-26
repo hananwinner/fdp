@@ -57,17 +57,6 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
         for (int i = 0; i < mListeners.size(); i++) {
             mListeners.get(i).onPageDataChanged(page);
         }
-        BackendPage backendPage  = (BackendPage) page;
-        if (backendPage != null) {
-            if (backendPage.isCompleted()) {
-                List<SyncanoObject> syncanoBackendObjects = backendPage.getSyncanoBackendObjects();
-                for (SyncanoObject syncanoBackendObject : syncanoBackendObjects) {
-                    mLoaderManager.initLoader(backendPage.getNumInSequence(),null,this);
-
-
-                }
-            }
-        }
     }
 
     @Override
@@ -115,4 +104,5 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     public void unregisterListener(ModelCallbacks listener) {
         mListeners.remove(listener);
     }
+
 }
