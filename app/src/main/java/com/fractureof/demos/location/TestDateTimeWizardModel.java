@@ -22,7 +22,11 @@ public class TestDateTimeWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
         return new PageList(
-                new DatesTimePage(this,Consts.DATESTIME_PAGE_TITLE, SplashActivity.v1DatePlan).setRequired(true)
+                new DatesTimePage(this,
+                        Consts.DATESTIME_PAGE_TITLE,
+
+                        SplashActivity.v1DatePlan
+                ).setRequired(true)
         );
     }
 }

@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.fractureof.demos.location.backend.Pickup;
-import com.fractureof.demos.location.interactions.DistanceDrawInteraction;
 import com.fractureof.demos.location.logic.DistanceCalculator;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -17,8 +16,6 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by hanan on 29/02/2016.
  */
 public class DistanceDraw extends View {
-
-
     static class UnscaledDimensions {
         private static int textSize = 14;
         private static float avatarSize = 160.0f;
@@ -48,7 +45,6 @@ public class DistanceDraw extends View {
 
     private Pickup pickup;
 
-
     float scaleFactor;
     ScaledDimesnsions scaledDimensions;
 
@@ -70,10 +66,8 @@ public class DistanceDraw extends View {
         initScaleFactor();
         scaledDimensions = new ScaledDimesnsions(scaleFactor);
         initialize();
-//        invalidate();
     }
     private void initialize() {
-
         mPaintHangoutMark = new Paint();
         mPaintHangoutMark.setColor(Color.parseColor("#9124B2"));
         mPaintHangoutMark.setTextSize(scaledDimensions.textSize);
@@ -93,7 +87,6 @@ public class DistanceDraw extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //where to draw the emoji ?
         //elevation - depends if need be drawn about pickup or meetup
         float height = getHeight();
         float hangoutEmojiBottom = height/2 + scaledDimensions.textSize/2;
@@ -122,10 +115,10 @@ public class DistanceDraw extends View {
             String distHangPartnerTitle = String.format(Values.distanceTitleFMT,distancePartner,Values.distanceUnit);
             String distHangMeTitle = String.format(Values.distanceTitleFMT,distanceMe,Values.distanceUnit);
 
-            hangoutEmojiLeft = width/( distanceMe+distancePartner ) * distancePartner;
+            hangoutEmojiLeft = width / ( distanceMe + distancePartner ) * distancePartner;
 
             //arrow from partner to hangout
-            float arPartStartX=0 + Values.arrowPadding;
+            float arPartStartX = 0 + Values.arrowPadding;
             float arPartStartY = height/2 + scaledDimensions.textSize/2;
             
             float arPartEndX = hangoutEmojiLeft - Values.arrowPadding;
@@ -146,7 +139,6 @@ public class DistanceDraw extends View {
             canvas.drawPath(arPartPath,this.mPaintDistanceHangoutPartner);
             canvas.drawTextOnPath(distHangPartnerTitle,arPartPath,0,Values.drawTextonPathV,this.mPaintDistanceHangoutPartner);
 
-
             float arMeStartX = getWidth() - Values.arrowPadding;
             float arMeStartY = arPartStartY;
 
@@ -156,6 +148,7 @@ public class DistanceDraw extends View {
             float arMeHeadX = arMeEndX + Values.arrowHeadSideSize;
             float arMeHeadY1 = arMeEndY + Values.arrowHeadSideSize;
             float arMeHeadY2 = arMeEndY - Values.arrowHeadSideSize;
+
             Path arMePath = new Path();
             arMePath.moveTo(arMeEndX, arMeEndY);
             arMePath.lineTo(arMeStartX, arMeStartY);
