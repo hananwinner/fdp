@@ -49,7 +49,6 @@ public class DatesTimePage extends Page {
 
     @Override
     public void notifyDataChanged() {
-        updateBackend();
         super.notifyDataChanged();
     }
 
