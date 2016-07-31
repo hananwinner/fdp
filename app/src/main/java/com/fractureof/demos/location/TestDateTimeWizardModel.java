@@ -16,15 +16,11 @@ public class TestDateTimeWizardModel extends AbstractWizardModel {
         public static String DATESTIME_PAGE_TITLE = "Date's Time";
     }
 
-    public TestDateTimeWizardModel(Context context, LoaderManager loaderManager) {
-        super(context, loaderManager);
-    }
     @Override
     protected PageList onNewRootPageList() {
         return new PageList(
                 new DatesTimePage(this,
                         Consts.DATESTIME_PAGE_TITLE,
-
                         SplashActivity.v1DatePlan
                 ).setRequired(true)
         );

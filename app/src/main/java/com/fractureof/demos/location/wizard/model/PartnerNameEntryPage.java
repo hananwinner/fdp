@@ -3,6 +3,7 @@ package com.fractureof.demos.location.wizard.model;
 import android.support.v4.app.Fragment;
 
 import com.fractureof.demos.location.PartnerNameEntryFragment;
+import com.fractureof.demos.location.backend.DatePlan;
 
 import java.util.ArrayList;
 
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 public class PartnerNameEntryPage extends Page {
     public static final String NAME_DATA_KEY = "name";
 
-    public PartnerNameEntryPage(ModelCallbacks callbacks, String title) {
-        super(callbacks, title);
+    public PartnerNameEntryPage(ModelCallbacks callbacks, String title, DatePlan datePlan) {
+        super(callbacks, title, datePlan);
     }
 
     @Override
@@ -23,6 +24,11 @@ public class PartnerNameEntryPage extends Page {
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
+
+    }
+
+    @Override
+    protected void doSetBackendData() {
 
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
+import com.fractureof.demos.location.SplashActivity;
 import com.fractureof.demos.location.backend.DatePlan;
 import com.fractureof.demos.location.backend.FeWizPageDatestime;
 import com.fractureof.demos.location.util.DateTimeFormat;
@@ -13,6 +14,7 @@ import com.syncano.library.data.SyncanoObject;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,14 +28,11 @@ public class DatesTimePage extends Page {
     public static final String DATESTIME_DAY_OF_MONTH_DATA_KEY = "DATESTIME_DAY_OF_MONTH";
     public DatesTimePage(ModelCallbacks callbacks,
                          String title,
-                         Context context,
-                         LoaderManager loaderManager)
-    {
-        super(callbacks, title);
+                         DatePlan datePlan) {
+        super(callbacks, title, datePlan);
         initValues();
         mBackendObject = new FeWizPageDatestime();
         ((FeWizPageDatestime)mBackendObject).datePlan = datePlan;
-
     }
 
     private void initValues() {
@@ -50,8 +49,8 @@ public class DatesTimePage extends Page {
 
     @Override
     public void notifyDataChanged() {
+        updateBackend();
         super.notifyDataChanged();
-
     }
 
     @Override
@@ -116,4 +115,10 @@ public class DatesTimePage extends Page {
                 isDateTimeFieldSet(minute);
     }
     private boolean isDateTimeFieldSet(int field) { return field >= 0;}
+
+    @Override
+    protected void doSetBackendData() {
+        assert isCompleted(): "trying to sync incompleted data"; //TODO: maybe allow partial pages ?
+        (( FeWizPageDatestime )mBackendObject).datestime = new Date(getDatesTime().getTimeInMillis());
+    }
 }

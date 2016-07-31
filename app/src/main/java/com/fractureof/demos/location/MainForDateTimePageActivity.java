@@ -33,7 +33,7 @@ public class MainForDateTimePageActivity extends android.support.v7.app.ActionBa
 
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
-    private AbstractWizardModel mWizardModel = new TestDateTimeWizardModel(this);
+    private AbstractWizardModel mWizardModel = new TestDateTimeWizardModel();
 
 
     //private Button mNextButton;

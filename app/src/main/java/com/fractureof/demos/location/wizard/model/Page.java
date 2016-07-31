@@ -25,17 +25,20 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 
 import com.fractureof.demos.location.SplashActivity;
+import com.fractureof.demos.location.backend.DatePlan;
 import com.syncano.library.api.Response;
 import com.syncano.library.data.SyncanoObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Represents a single page in the wizard.
  */
 public abstract class Page implements
-        PageTreeNode,
-        LoaderManager.LoaderCallbacks<Response<SyncanoObject>> {
+        PageTreeNode
+        /*,LoaderManager.LoaderCallbacks<Response<SyncanoObject>>*/
+{
     /**
      * The key into {@link #getData()} used for wizards with simple (single) values.
      */
@@ -44,9 +47,12 @@ public abstract class Page implements
     protected ModelCallbacks mCallbacks;
 
     protected SyncanoObject mBackendObject = null;
-    private Context mContext;
-    private LoaderManager mLoaderMananger;
-    private int mPageId;
+    AtomicBoolean mIsSynched = new AtomicBoolean(true);
+
+
+    //private Context mContext;
+    //private LoaderManager mLoaderMananger;
+    //private int mPageId;
 
     /**
      * Current wizard values/selections.
@@ -57,15 +63,16 @@ public abstract class Page implements
     protected String mParentKey;
 
     protected Page(ModelCallbacks callbacks,
-                   String title,
-                   Context context,
-                   LoaderManager loaderManager,
-                   int pageId) {
+                   String title
+                   ,DatePlan datePlan
+                   /*Context context,*/
+                   /*LoaderManager loaderManager,*/
+                   /*int pageId*/) {
         mCallbacks = callbacks;
         mTitle = title;
-        mContext = context;
-        mLoaderMananger = loaderManager;
-        mPageId = pageId;
+        //mContext = context;
+        //mLoaderMananger = loaderManager;
+        //mPageId = pageId;
     }
 
     public Bundle getData() {
@@ -112,7 +119,7 @@ public abstract class Page implements
     }
 
     public void notifyDataChanged() {
-        mLoaderMananger.initLoader(mPageId,null,this);
+        updateBackend();
         mCallbacks.onPageDataChanged(this);
     }
 
@@ -121,29 +128,57 @@ public abstract class Page implements
         return this;
     }
 
-    @Override
-    public Loader<Response<SyncanoObject>> onCreateLoader(int id, Bundle args) {
-        return new SynchronizeBackendObject(mContext);
+//    @Override
+//    public Loader<Response<SyncanoObject>> onCreateLoader(int id, Bundle args) {
+//        return new SynchronizeBackendObject(mContext);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Response<SyncanoObject>> loader, Response<SyncanoObject> data) {
+//
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Response<SyncanoObject>> loader) {
+//
+//    }
+
+//    class SynchronizeBackendObject extends AsyncTaskLoader<Response<SyncanoObject>> {
+//        public SynchronizeBackendObject(Context context) {
+//            super(context);
+//        }
+//
+//        @Override
+//        public Response<SyncanoObject> loadInBackground() {
+//            return mBackendObject.save();
+//        }
+//    }
+
+    ///////////////////////////////////
+    // Backend Synchronization
+    //////////////////////////////////
+
+    public boolean isSynched() {
+        return mIsSynched.get();
+    }
+    private void doSyncBackend()
+    {
+        new SyncBackendObject().execute(null,null,null);
     }
 
-    @Override
-    public void onLoadFinished(Loader<Response<SyncanoObject>> loader, Response<SyncanoObject> data) {
+    protected abstract void doSetBackendData();
 
+    protected void updateBackend() {
+        doSetBackendData();
+        doSyncBackend();
     }
 
-    @Override
-    public void onLoaderReset(Loader<Response<SyncanoObject>> loader) {
-
-    }
-
-    class SynchronizeBackendObject extends AsyncTaskLoader<Response<SyncanoObject>> {
-        public SynchronizeBackendObject(Context context) {
-            super(context);
-        }
-
+    class SyncBackendObject extends AsyncTask<Void, Void, Void> {
         @Override
-        public Response<SyncanoObject> loadInBackground() {
-            return mBackendObject.save();
+        protected Void doInBackground(Void... params) {
+            Response<SyncanoObject> saveResponse =  mBackendObject.save();
+            mIsSynched.set(true);
+            return null;
         }
     }
 }
