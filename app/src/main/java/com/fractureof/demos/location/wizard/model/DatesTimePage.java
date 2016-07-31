@@ -32,7 +32,7 @@ public class DatesTimePage extends Page {
         super(callbacks, title, datePlan);
         initValues();
         mBackendObject = new FeWizPageDatestime();
-        ((FeWizPageDatestime)mBackendObject).datePlan = datePlan;
+        ((FeWizPageDatestime)mBackendObject).datePlanId = datePlan.getId();
     }
 
     private void initValues() {
