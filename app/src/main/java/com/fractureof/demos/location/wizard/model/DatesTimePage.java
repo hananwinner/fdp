@@ -26,6 +26,7 @@ public class DatesTimePage extends Page {
     public static final String DATESTIME_YEAR_DATA_KEY = "DATESTIME_YEAR";
     public static final String DATESTIME_MONTH_DATA_KEY = "DATESTIME_MONTH";
     public static final String DATESTIME_DAY_OF_MONTH_DATA_KEY = "DATESTIME_DAY_OF_MONTH";
+
     public DatesTimePage(ModelCallbacks callbacks,
                          String title,
                          DatePlan datePlan) {
@@ -33,6 +34,7 @@ public class DatesTimePage extends Page {
         initValues();
         mBackendObject = new FeWizPageDatestime();
         ((FeWizPageDatestime)mBackendObject).datePlanId = datePlan.getId();
+        //TODO: read values from date plan into the data
     }
 
     private void initValues() {

@@ -24,9 +24,14 @@ public class DateTimeFormat {
         daysDiffMap.put(1, "Yesterday");
     }
 
-    public static String make_simple_date_desc(Calendar date) {
+    public static int calcDaysDiff(Calendar date) {
         long _date_diff = Calendar.getInstance().getTimeInMillis() - date.getTimeInMillis();
         int daysDiff = (int) TimeUnit.MILLISECONDS.toDays(_date_diff);
+        return daysDiff;
+    }
+
+    public static String make_simple_date_desc(Calendar date) {
+        int daysDiff = calcDaysDiff(date);
         int hourOfDay = date.get(Calendar.HOUR_OF_DAY);
         if (daysDiff == 0 && (hourOfDay > 20 || hourOfDay < 7)) {
             return "Tonight";

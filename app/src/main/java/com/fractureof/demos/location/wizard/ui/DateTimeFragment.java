@@ -20,6 +20,7 @@ import com.fractureof.demos.location.dialogs.TimePickerFragment;
 import com.fractureof.demos.location.util.DateTimeFormat;
 import com.fractureof.demos.location.wizard.model.DatesTimePage;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 public class DateTimeFragment
@@ -154,7 +155,25 @@ public class DateTimeFragment
         mCustomTimeTableRow = (TableRow) rootView.findViewById(R.id.dates_time_custom_table_row);
 
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        setFromPage();
         return rootView;
+    }
+
+    private void setFromPage() {
+        if (mPage.isCompleted()) {
+            Calendar calendar = mPage.getDatesTime();
+            int daysDiff = - (DateTimeFormat.calcDaysDiff(calendar));
+            int activatorRowNum = mTonightTableRow.getId();
+            if (daysDiff == 1) {
+                activatorRowNum = mTomorrowTableRow.getId();
+            } else if (daysDiff > 1) {
+                activatorRowNum = mCustomTimeTableRow.getId();
+            }
+            String simpleDateDesc = DateTimeFormat.make_simple_date_desc(calendar);
+            String hourStr= DateTimeFormat.getFormattedHour( calendar );
+            String label = String.format("%s\n%s", simpleDateDesc,hourStr);
+            setDate(activatorRowNum, label);
+        }
     }
 
     @Override
@@ -202,6 +221,12 @@ public class DateTimeFragment
         String hourStr= DateTimeFormat.getFormattedHour( calendar );
         String label = String.format("%s\n%s", simpleDateDesc,hourStr);
 
+        setDate(activatorRowId, label);
+
+        Toast.makeText(this.getContext(), "It's a Date !",Toast.LENGTH_LONG).show();
+    }
+
+    private void setDate(int activatorRowId, String label) {
         int selectedColor = this.getResources().getColor(R.color.dates_time_highlight_row
                /* , this.getContext().getTheme()*/);
         if (mTonightTableRow.getId() == (activatorRowId)) {
@@ -216,8 +241,6 @@ public class DateTimeFragment
             mCustomTimeTableRow.setBackgroundColor(selectedColor);
             mCustomTimeText.setText(label);
         }
-
-        Toast.makeText(this.getContext(), "It's a Date !",Toast.LENGTH_LONG).show();
     }
 
     private void resetTemporaryDateValues() {
