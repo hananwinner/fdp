@@ -1,8 +1,6 @@
 package com.fractureof.demos.location.wizard.ui;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +10,7 @@ import android.widget.TextView;
 
 import com.fractureof.demos.location.R;
 import com.fractureof.demos.location.SplashActivity;
+import com.fractureof.demos.location.util.MapUtils;
 import com.fractureof.demos.location.wizard.model.MyLocationPage;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -30,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class MyLocationFragment extends Fragment
-        implements OnMapReadyCallback,GoogleMap.OnMapLongClickListener {
+        implements OnMapReadyCallback,GoogleMap.OnMapLongClickListener, PlaceSelectionListener {
 
     private static final String ARG_KEY = "key";
     private String mKey;
@@ -74,38 +73,10 @@ public class MyLocationFragment extends Fragment
         mapFragment.getMapAsync(this);
         mAutocompleteFragment = (PlaceAutocompleteFragment)
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        mAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                updatePage(place);
-                setMyLocationOnMap();
-                mPage.notifyDataChanged();
-            }
-
-            @Override
-            public void onError(Status status) {
-
-            }
-        });
+        mAutocompleteFragment.setOnPlaceSelectedListener(this);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
         updateAutocompleteText();
         return rootView;
-    }
-
-    private void updatePage(Place place) {
-        updatePage(place.getLatLng(),place.getId());
-    }
-
-    private void updatePage(LatLng latLng, String geo_id) {
-        mPage.getData().putString(MyLocationPage.MY_LOCATION_GEO_ID_DATA_KEY,geo_id);
-        mPage.getData().putDouble(
-                MyLocationPage.MY_LOCATION_LAT_DATA_KEY,
-                latLng.latitude
-        );
-        mPage.getData().putDouble(
-                MyLocationPage.MY_LOCATION_LNG_DATA_KEY,
-                latLng.longitude
-        );
     }
 
     @Override
@@ -132,6 +103,27 @@ public class MyLocationFragment extends Fragment
         );
     }
 
+    /*OnPlaceSelectedListener*/
+    @Override
+    public void onPlaceSelected(Place place) {
+        updatePage(place);
+        setMyLocationOnMap();
+
+    }
+
+    /*OnPlaceSelectedListener*/
+    @Override
+    public void onError(Status status) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setOnMapLongClickListener(this);
+        setMyLocationOnMap();
+    }
+
     private void setMyLocationOnMap() {
         LatLng latLng = myLatLng();
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
@@ -147,25 +139,12 @@ public class MyLocationFragment extends Fragment
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setOnMapLongClickListener(this);
-        setMyLocationOnMap();
-    }
-
-    @Override
     public void onMapLongClick(LatLng latLng) {
         mMyMarker.setPosition(latLng);
-        String addressDescription = geocodeAddressDescription(latLng);
+        String addressDescription =
+                MapUtils.geocodeAddressDescription(getContext(), latLng);
         updatePage(latLng,"", addressDescription);
         updateAutocompleteText(addressDescription);
-
-        mPage.notifyDataChanged();
-    }
-
-    private void updatePage(LatLng latLng, String geoId, String addressDescription) {
-        mPage.getData().putString(MyLocationPage.MY_LOCATION_ADDRESS_DESC_DATA_KEY, addressDescription);
-        updatePage(latLng, geoId);
     }
 
     private void updateAutocompleteText(String address) {
@@ -179,24 +158,26 @@ public class MyLocationFragment extends Fragment
         }
     }
 
-    private String geocodeAddressDescription(LatLng latLng) {
-        Geocoder geocoder = new Geocoder(getContext());
-        String addressDescription = String.format("%s,%s",latLng.latitude,latLng.longitude);
-        try {
-            List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addressList.size() > 0) {
-                Address address = addressList.get(0);
-                if (address.getMaxAddressLineIndex() > 0)
-                {
-                    addressDescription = address.getAddressLine(0);
-                } else if (address.getFeatureName() != null) {
-                    addressDescription = address.getFeatureName();
-                } else if (address.getAdminArea() != null) {
-                    addressDescription = address.getAdminArea();
-                }
-            }
-        } catch (IOException ex) {}
-        return addressDescription;
+    private void updatePage(LatLng latLng, String geoId, String addressDescription) {
+        mPage.getData().putString(MyLocationPage.MY_LOCATION_ADDRESS_DESC_DATA_KEY, addressDescription);
+        updatePage(latLng, geoId);
+    }
+
+    private void updatePage(Place place) {
+        updatePage(place.getLatLng(),place.getId());
+    }
+
+    private void updatePage(LatLng latLng, String geo_id) {
+        mPage.getData().putString(MyLocationPage.MY_LOCATION_GEO_ID_DATA_KEY,geo_id);
+        mPage.getData().putDouble(
+                MyLocationPage.MY_LOCATION_LAT_DATA_KEY,
+                latLng.latitude
+        );
+        mPage.getData().putDouble(
+                MyLocationPage.MY_LOCATION_LNG_DATA_KEY,
+                latLng.longitude
+        );
+        mPage.notifyDataChanged();
     }
 
 }

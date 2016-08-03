@@ -37,7 +37,6 @@ public class MyLocationPage extends Page{
 
     @Override
     public Fragment createFragment() {
-
         return MyLocationFragment.create(getKey());
     }
 
